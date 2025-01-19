@@ -36,7 +36,11 @@ export default function ComparativaTab() {
       setErrorParroquias(null);
       try {
         const data = await fetchParroquias();
-        setParroquias(data.data);
+        if (data.data.length == 0){
+          setErrorParroquias("Error al recuperar la información.")
+        }else{
+          setParroquias(data.data);
+        }
       } catch (err: any) {
         setErrorParroquias(err.message);
       } finally {
@@ -53,7 +57,11 @@ export default function ComparativaTab() {
       setErrorTopicos(null);
       try {
         const data = await fetchTopicos();
-        setTopicos(data.data);
+        if (data.data.length == 0){
+          setErrorTopicos("Error al recuperar la información.")
+        }else{
+          setTopicos(data.data);
+        }
       } catch (err: any) {
         setErrorTopicos(err.message);
       } finally {

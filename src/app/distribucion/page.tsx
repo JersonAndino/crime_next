@@ -18,6 +18,8 @@ export default function DistribucionTab() {
   const [loadingTopicos, setLoadingTopicos] = useState<boolean>(false);
   const [errorTopicos, setErrorTopicos] = useState<string | null>(null);
   const [data, setData] = useState<PostDistribucionResponse>();
+  const [loadingData, setLoadingData] = useState<boolean>(false);
+  const [errorData, setErrorData] = useState<string | null>(null);
 
   const [selectedTopics, setSelectedTopics] = useState([1]);
 
@@ -27,12 +29,17 @@ export default function DistribucionTab() {
       setErrorTopicos(null);
       try {
         const data = await fetchTopicos();
-        const topicosJSON: TopicosJSON = {};
-        data.data.forEach((topico) => {
-          topicosJSON[topico.codigo] = topico;
-        });
-        setTopicosJSON(topicosJSON);
-        setTopicos(data.data);
+        
+        if (data.data.length == 0){
+          setErrorTopicos("Error al recuperar la información.")
+        }else{
+          const topicosJSON: TopicosJSON = {};
+          data.data.forEach((topico) => {
+            topicosJSON[topico.codigo] = topico;
+          });
+          setTopicosJSON(topicosJSON);
+          setTopicos(data.data);
+        }
       } catch (err: any) {
         setErrorTopicos(err.message);
       } finally {
@@ -56,7 +63,11 @@ export default function DistribucionTab() {
           "/api/hechos_distribucion/",
           data
         );
-        setData(response);
+        if (response.data.total == null){
+          setErrorData("No se ha podido recuperar información.")
+        }else{
+          setData(response);
+        }
       } catch (error) {
         console.error("Error al enviar datos:", error);
       }
@@ -168,7 +179,7 @@ export default function DistribucionTab() {
             <div className="collapse-title text-xl font-medium">Topicos</div>
             {loadingTopicos && <SkeletonLoader />}
             {errorTopicos && (
-              <p className="text-red-500">Error al cargar los topicos</p>
+              <p className="text-red-500 p-[10px]">Error al cargar los topicos</p>
             )}
             {!loadingTopicos && !errorTopicos && (
               <div className="">
@@ -216,7 +227,8 @@ export default function DistribucionTab() {
             DISTRIBUCION DE TOPICOS
           </h1>
         </div>
-        <div className="col-span-5">
+        {!errorData && (
+          <div className="col-span-5">
           <br />
           {data?.data.topicos_counts.map((topico, index) => (
             <div className="topic-label-element p-0" key={topico.codigo}>
@@ -240,8 +252,9 @@ export default function DistribucionTab() {
             </div>
           ))}
         </div>
-
-        <div className="col-span-7">
+        )
+        }
+        <div className={!errorData ? "col-span-7": "col-span-12"}>
           <div className="block-description">
             <p>
               Este gráfico de pastel muestra la distribución de los diferentes
@@ -253,11 +266,20 @@ export default function DistribucionTab() {
               predominantes en las áreas y períodos de tiempo definidos.
             </p>
           </div>
-          <Distribucion
-            topicos_counts={data?.data.topicos_counts}
-            topicos_json={topicosJSON}
-            total={data?.data.total}
-          />
+          {errorData && (
+            <div>
+              <p className="text-red-500 p-[10px]">No se encontró información con los datos seleccionados.</p>
+            </div>
+          )}
+          {
+            !errorData && (
+              <Distribucion
+                topicos_counts={data?.data.topicos_counts}
+                topicos_json={topicosJSON}
+                total={data?.data.total}
+              />
+            )
+          }
         </div>
       </div>
     </div>

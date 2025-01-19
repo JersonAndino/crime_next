@@ -24,8 +24,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
   return (
-    <html lang="en" data-theme="light" className="py-[30px] px-[100px] bg-base-300">
+    <html lang="en" data-theme="light" className="py-[30px] px-[50px] bg-base-300">
       <body>
         <header>
           <Tabs />

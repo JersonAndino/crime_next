@@ -4,7 +4,8 @@ import { Topico } from "@/types/topico";
 import { Parroquia, ParroquiasJSON } from "@/types/parroquia";
 import { fetchTopicos } from "@/services/topicoService";
 import { fetchParroquias } from "@/services/parroquiaService";
-import { PostMapResponse} from "@/types/response";
+import { PostMapResponse } from "@/types/response";
+import { AuthProvider } from "../components/authProvider";
 
 import ApiService from "@/services/hechoService";
 import Mapa from "../components/mapa/Mapa";
@@ -20,7 +21,10 @@ export default function MapaTab() {
   const [loadingTopicos, setLoadingTopicos] = useState<boolean>(false);
   const [errorParroquias, setErrorParroquias] = useState<string | null>(null);
   const [errorTopicos, setErrorTopicos] = useState<string | null>(null);
+
   const [data, setData] = useState<PostMapResponse>();
+  const [loadingData, setLoadingData] = useState<boolean>(false);
+  const [errorData, setErrorData] = useState<string | null>(null);
 
   const [selectedTopic, setSelectedTopic] = useState(1);
 
@@ -51,7 +55,11 @@ export default function MapaTab() {
       setErrorTopicos(null);
       try {
         const data = await fetchTopicos();
-        setTopicos(data.data);
+        if (data.data.length == 0) {
+          setErrorTopicos("No se recupero ningún tópico.");
+        } else {
+          setTopicos(data.data);
+        }
       } catch (err: any) {
         setErrorTopicos(err.message);
       } finally {
@@ -65,6 +73,7 @@ export default function MapaTab() {
   useEffect(() => {
     const sendData = async () => {
       try {
+        setLoadingData(true);
         const data = {
           fecha_inicio: fechaInicio,
           fecha_fin: fechaFin,
@@ -75,9 +84,16 @@ export default function MapaTab() {
           "/api/hechos_map/",
           data
         );
-        setData(response);
-      } catch (error) {
+        if (response.data.total == null) {
+          setErrorData("No se ha podido recuperar la información.")
+        } else {
+          setData(response);
+        }
+      } catch (error: any) {
+        setErrorData(error.message)
         console.error("Error al enviar datos:", error);
+      } finally {
+        setLoadingData(false);
       }
     };
     sendData();
@@ -120,7 +136,6 @@ export default function MapaTab() {
           fecha_fin: fechaFin,
           topico_id: selectedTopic,
         };
-        console.log(data);
         const response = await ApiService.post<PostMapResponse>(
           "/api/hechos_map/",
           data
@@ -134,103 +149,113 @@ export default function MapaTab() {
   };
 
   return (
-    <div className="grid grid-cols-12">
-      <div className="flex w-full col-span-3 min-h-[776px]">
-        <div className="space-y-6 min-w-[357.66px]">
-          <div>
-            <div className="collapse-title text-xl font-medium">Fechas</div>
+    <AuthProvider>
+      <div className="grid grid-cols-12">
+        <div className="flex w-full col-span-3 min-h-[776px]">
+          <div className="space-y-6 min-w-[357.66px]">
             <div>
-              <label htmlFor="fechaInicio">Fecha Inicio:</label>
-              <input
-                className="input w-full max-w-xs"
-                type="date"
-                id="fechaInicio"
-                name="fechaInicio"
-                value={fechaInicio}
-                max={fechaFin || getCurrentDate()}
-                onChange={handleFechaInicioChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="fechaFin">Fecha Fin:</label>
-              <input
-                className="input w-full max-w-xs"
-                type="date"
-                id="fechaFin"
-                name="fechaFin"
-                value={fechaFin}
-                min={fechaInicio}
-                max={getCurrentDate()}
-                onChange={handleFechaFinChange}
-              />
-            </div>
-          </div>
-          <div className="divider m-0"></div>
-          <form onSubmit={handleSubmit} className="min-h-[508px]">
-            <div>
-              <div className="collapse-title text-xl font-medium">Tópicos</div>
-              {loadingTopicos && <SkeletonLoader />}
-              {errorTopicos && (
-                <p className="text-red-500">Error al cargar los topicos</p>
-              )}
-              {!loadingTopicos &&
-                !errorTopicos &&
-                topicos.map((topico) => (
-                  <div key={topico.codigo}>
-                    <label className="label cursor-pointer">
-                      <span className="label-text">{topico.nombre}</span>
-                      <input
-                        type="radio"
-                        name="topico"
-                        value={topico.codigo}
-                        onClick={handleClickRadio}
-                        defaultChecked = {selectedTopic == topico.codigo}
-                        className="radio"
-                      />
-                    </label>
-                  </div>
-                ))}
-            </div>
-
-            <button className="btn btn-neutral" type="submit">
-              Enviar
-            </button>
-          </form>
-        </div>
-        <div className="divider divider-horizontal m-0"></div>
-      </div>
-      <div className="col-span-9 grid grid-cols-12">
-        <div className="flex w-full col-span-7">
-          <Mapa
-            parroquias_counts={data?.data.parroquias_counts}
-            num_dias={data?.data.num_dias}
-          />
-          <div className="divider divider-horizontal m-0"></div>
-        </div>
-        <div className="col-span-5">
-          <div className="flex w-full flex-col border-opacity-50">
-            <div className="flex items-center justify-center">
-              <div className="stats w-full">
-                <div className="stat">
-                  <div className="stat-title">Tweets Totales Registrados</div>
-                  <div className="stat-value">{data?.data.total}</div>
-                </div>
+              <div className="collapse-title text-xl font-medium">Fechas</div>
+              <div>
+                <label htmlFor="fechaInicio">Fecha Inicio:</label>
+                <input
+                  className="input w-full max-w-xs"
+                  type="date"
+                  id="fechaInicio"
+                  name="fechaInicio"
+                  value={fechaInicio}
+                  max={fechaFin || getCurrentDate()}
+                  onChange={handleFechaInicioChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="fechaFin">Fecha Fin:</label>
+                <input
+                  className="input w-full max-w-xs"
+                  type="date"
+                  id="fechaFin"
+                  name="fechaFin"
+                  value={fechaFin}
+                  min={fechaInicio}
+                  max={getCurrentDate()}
+                  onChange={handleFechaFinChange}
+                />
               </div>
             </div>
-            <div className="divider"></div>
-            <div className="bg-base-200 rounded-2xl">
-              <ParroquiasBars
-                parroquias_counts={data?.data.parroquias_counts}
-                parroquias_json={parroquias}
-              />
-            </div>
-            <div className="divider"></div>
-            <div className="bg-base-200 rounded-2xl">
-              {/* <TopCrimes data={data.top_topicos} topicos={parroquias_json} /> */}
+            <div className="divider m-0"></div>
+            <form onSubmit={handleSubmit} className="min-h-[508px]">
+              <div>
+                <div className="collapse-title text-xl font-medium">Tópicos</div>
+                {loadingTopicos && <SkeletonLoader />}
+                {errorTopicos && (
+                  <p className="text-red-500 p-[10px]">Error al cargar los topicos</p>
+                )}
+                {!loadingTopicos &&
+                  !errorTopicos &&
+                  topicos.map((topico) => (
+                    <div key={topico.codigo}>
+                      <label className="label cursor-pointer">
+                        <span className="label-text">{topico.nombre}</span>
+                        <input
+                          type="radio"
+                          name="topico"
+                          value={topico.codigo}
+                          onClick={handleClickRadio}
+                          defaultChecked={selectedTopic == topico.codigo}
+                          className="radio"
+                        />
+                      </label>
+                    </div>
+                  ))}
+              </div>
+
+              <button className="btn btn-neutral" type="submit">
+                Enviar
+              </button>
+            </form>
+          </div>
+          <div className="divider divider-horizontal m-0"></div>
+        </div>
+        <div className="col-span-9 grid grid-cols-12">
+          <div className="flex w-full col-span-7">
+            <Mapa
+              parroquias_counts={data?.data.parroquias_counts}
+              num_dias={data?.data.num_dias}
+            />
+            <div className="divider divider-horizontal m-0"></div>
+          </div>
+          <div className="col-span-5">
+            <div className="flex w-full flex-col border-opacity-50">
+              <div className="flex items-center justify-center">
+                <div className="stats w-full">
+                  <div className="stat">
+                    <div className="stat-title">Tweets Totales Registrados</div>
+                    {loadingData && <SkeletonLoader />}
+                    {errorData && (
+                      <p className="text-red-500 p-[10px]">No se ha podido recuperar la información</p>
+                    )}
+                    {!loadingData &&
+                      !errorData &&
+                      <div className="stat-value">{data?.data.total}</div>
+                    }
+
+                  </div>
+                </div>
+              </div>
+              <div className="divider"></div>
+              <div className="bg-base-200 rounded-2xl">
+                <ParroquiasBars
+                  parroquias_counts={data?.data.parroquias_counts}
+                  parroquias_json={parroquias}
+                />
+              </div>
+              <div className="divider"></div>
+              <div className="bg-base-200 rounded-2xl">
+                {/* <TopCrimes data={data.top_topicos} topicos={parroquias_json} /> */}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </AuthProvider>
   );
 }

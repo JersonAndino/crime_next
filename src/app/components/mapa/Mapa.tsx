@@ -265,12 +265,18 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
   const createNewTransform = (transform: String) => {
     const transform_array = transform.split(",");
     let valor_1 = parseFloat(transform_array[0].split("(")[1]);
-    let valor_2 = parseFloat(transform_array[3]);
-    let valor_3 = parseFloat(transform_array[4]);
-    let valor_4 = parseFloat(transform_array[5].split(")")[0]);
+    let valor_2 = parseFloat(transform_array[1]);
+    let valor_3 = parseFloat(transform_array[2]);
+    let valor_4 = parseFloat(transform_array[3]);
+    let valor_5 = parseFloat(transform_array[4]);
+    let valor_6 = parseFloat(transform_array[5].split(")")[0]);
     valor_1 = valor_1 + parametroZoom;
-    valor_2 = valor_2 + parametroZoom;
-    return `matrix(${valor_1},0,0,${valor_2},${valor_3},${valor_4})`;
+    // valor_2 = valor_2 + parametroZoom;
+    // valor_3 = valor_3 + parametroZoom;
+    valor_4 = valor_4 + parametroZoom;
+    valor_5 = valor_5 - 5;
+    valor_6 = valor_6 - 5;
+    return `matrix(${valor_1},${valor_2},${valor_3},${valor_4},${valor_5},${valor_6})`;
   };
 
   const [parroquiasMap, setParroquiasMap] = useState<ParroquiasMap>(parroquias);
@@ -303,7 +309,16 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
     }
   }, [parroquias_counts]);
 
+  const reordenarParroquias = (indice: number, parroquias: ParroquiasMap) => {
+    const nuevoOrden: ParroquiasMap = parroquiasMap;
+    const parroquiaAux = parroquiasMap[indice];
+    // nuevoOrden[indice] = parroquiasMap[33];
+    nuevoOrden[33] = parroquiaAux;
+    setParroquiasMap(nuevoOrden);
+  }
+
     const handleHoverPath = (row: number, transform: string) => {
+      reordenarParroquias(row, parroquiasMap)
       const updatedParroquiasMap = { ...parroquiasMap };
       updatedParroquiasMap[row].transform = updatedParroquiasMap[row].transform_2;
       updatedParroquiasMap[row].transform_2 = transform;
@@ -311,6 +326,7 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
     };
 
     const handleHoverPathLeave = (row: number, transform: string) => {
+      reordenarParroquias(row, parroquiasMap)
       const updatedParroquiasMap = { ...parroquiasMap };
       updatedParroquiasMap[row].transform = updatedParroquiasMap[row].transform_2;
       updatedParroquiasMap[row].transform_2 = transform;

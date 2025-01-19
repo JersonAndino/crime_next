@@ -24,6 +24,8 @@ export default function ParroquiasTab() {
   const [selectedTopics, setSelectedTopics] = useState([1]);
   const [selectedParroquias, setSelectedParroquias] = useState([1]);
   const [data, setData] = useState<PostAnaliticResponse>();
+  const [loadingData, setLoadingData] = useState<boolean>(false);
+  const [errorData, setErrorData] = useState<string | null>(null);
 
   useEffect(() => {
     const loadParroquias = async () => {
@@ -31,12 +33,16 @@ export default function ParroquiasTab() {
       setErrorParroquias(null);
       try {
         const data = await fetchParroquias();
-        const parroquiasJson: ParroquiasJSON = {};
-        data.data.forEach((parroquia) => {
-          parroquiasJson[parroquia.codigo] = parroquia;
-        });
-        setParroquiasJSON(parroquiasJson);
-        setParroquias(data.data);
+        if (data.data.length == 0){
+          setErrorParroquias("Error al recuperar la información.");
+        }else{
+          const parroquiasJson: ParroquiasJSON = {};
+          data.data.forEach((parroquia) => {
+            parroquiasJson[parroquia.codigo] = parroquia;
+          });
+          setParroquiasJSON(parroquiasJson);
+          setParroquias(data.data);
+        }
       } catch (err: any) {
         setErrorParroquias(err.message);
       } finally {
@@ -53,7 +59,11 @@ export default function ParroquiasTab() {
       setErrorTopicos(null);
       try {
         const data = await fetchTopicos();
-        setTopicos(data.data);
+        if (data.data.length == 0){
+          setErrorTopicos("Error al recuperar la información.")
+        }else{
+          setTopicos(data.data);
+        }
       } catch (err: any) {
         setErrorTopicos(err.message);
       } finally {
@@ -66,6 +76,7 @@ export default function ParroquiasTab() {
 
   useEffect(() => {
     const sendData = async () => {
+      setErrorData(null);
       try {
         const data = {
           fecha_inicio: fechaInicio,
@@ -78,8 +89,14 @@ export default function ParroquiasTab() {
           "/api/hechos_analitica/",
           data
         );
-        setData(response);
-      } catch (error) {
+        console.log(response.data.parroquias_topicos_counts.length);
+        if (response.data.parroquias_topicos_counts.length == 0) {
+          setErrorData("Error al recuperar la información.")
+        }else{
+          setData(response);
+        }
+      } catch (error: any) {
+        setErrorData(error.message)
         console.error("Error al enviar datos:", error);
       }
     };
@@ -219,7 +236,7 @@ export default function ParroquiasTab() {
                 <div className="h-96 overflow-y-auto">
                   {loadingParroquias && <SkeletonLoader />}
                   {errorParroquias && (
-                    <p className="text-red-500">
+                    <p className="text-red-500 p-[10px]">
                       Error al cargar las parroquias
                     </p>
                   )}
@@ -267,7 +284,7 @@ export default function ParroquiasTab() {
                 <div className="h-96 overflow-y-auto">
                   {loadingTopicos && <SkeletonLoader />}
                   {errorTopicos && (
-                    <p className="text-red-500">Error al cargar los topicos</p>
+                    <p className="text-red-500 p-[10px]">Error al cargar los topicos</p>
                   )}
                   {!loadingTopicos && !errorTopicos && (
                     <div className="">
@@ -333,9 +350,16 @@ export default function ParroquiasTab() {
           observa un aumento significativo en ciertos tópicos de crimen.
         </p>
         <div className="col-span-12">
-          <ParroquiasTopicosBars
-            parroquias_topicos_counts={data?.data.parroquias_topicos_counts}
-          />
+          {!errorData && (
+            <ParroquiasTopicosBars
+              parroquias_topicos_counts={data?.data.parroquias_topicos_counts}
+            />
+          )}
+          {errorData && (
+            <div>
+              <p className="text-red-500 p-[10px]">No se encontró información con los datos seleccionados.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
