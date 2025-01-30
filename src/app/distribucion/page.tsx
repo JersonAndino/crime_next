@@ -58,7 +58,7 @@ export default function DistribucionTab() {
           fecha_fin: fechaFin,
           topicos: selectedTopics,
         };
-
+        setErrorData(null)
         const response = await ApiService.post<PostDistribucionResponse>(
           "/api/hechos_distribucion/",
           data
@@ -107,12 +107,16 @@ export default function DistribucionTab() {
           fecha_fin: fechaFin,
           topicos: selectedTopics,
         };
-
+        setErrorData(null)
         const response = await ApiService.post<PostDistribucionResponse>(
           "/api/hechos_distribucion/",
           data
         );
-        setData(response);
+        if (response.data.total == null){
+          setErrorData("No se ha podido recuperar información.")
+        }else{
+          setData(response);
+        }
       } catch (error) {
         console.error("Error al enviar datos:", error);
       }
@@ -228,15 +232,15 @@ export default function DistribucionTab() {
           </h1>
         </div>
         {!errorData && (
-          <div className="col-span-5">
+          <div className="col-span-4">
           <br />
           {data?.data.topicos_counts.map((topico, index) => (
-            <div className="topic-label-element p-0" key={topico.codigo}>
+            <div className="topic-label-element p-0 m-0" key={topico.codigo}>
               <div
                 tabIndex={0}
-                className="relative collapse collapse-plus border-base-300 bg-base-200 border"
+                className="collapse collapse-plus border-base-300 bg-base-200 border"
               >
-                <div className="collapse-title text-xl font-small flex p-2 z-10">
+                <div className="collapse-title text-xl font-small flex p-2">
                   <div
                     id={"topic" + index}
                     className="box-topic rounded-box"
@@ -254,7 +258,7 @@ export default function DistribucionTab() {
         </div>
         )
         }
-        <div className={!errorData ? "col-span-7": "col-span-12"}>
+        <div className={!errorData ? "col-start-6 col-span-7": "col-span-12"}>
           <div className="block-description">
             <p>
               Este gráfico de pastel muestra la distribución de los diferentes

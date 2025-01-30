@@ -87,25 +87,10 @@ const Admin = () => {
                         Cerrar sesión
                     </button>
                 </div>
-                <p className="text-lg mb-6">
-                    Bienvenido al panel de administración. Aquí puedes gestionar tu aplicación.
-                </p>
 
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold mb-4">Subir archivos</h2>
-                    <div className="mb-4">
-                        <label className="block mb-2 font-medium">Selecciona el tipo de archivo:</label>
-                        <select
-                            value={fileType}
-                            onChange={(e) => setFileType(e.target.value)}
-                            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="TOPICO">Tópicos</option>
-                            <option value="PARROQUIA">Parroquias</option>
-                            <option value="HECHO">Hechos</option>
-                            <option value="DATA">Data Recolectada</option>
-                        </select>
-                    </div>
+                    
                     <div className="mb-4">
                         <label className="block mb-2 font-medium">Selecciona un archivo:</label>
                         <input
@@ -124,13 +109,13 @@ const Admin = () => {
                 </div>
 
                 {/* Contenido adicional del panel de administración */}
-                <div className="mt-8">
+                {/* <div className="mt-8">
                     <ul>
                         <li className="mb-4">Gestión de usuarios</li>
                         <li className="mb-4">Estadísticas</li>
                         <li className="mb-4">Configuraciones</li>
                     </ul>
-                </div>
+                </div> */}
             </div>
         </div>
     );

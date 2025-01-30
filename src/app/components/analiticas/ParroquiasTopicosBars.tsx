@@ -18,6 +18,7 @@ const ParroquiasTopicosBars: React.FC<ParroquiasTopicosBarsProps> = ({
   parroquias_topicos_counts, parroquias_json
 }) => {
   const data: {
+    title: number,
     labels: string[];
     datasets: {
       label: string;
@@ -35,6 +36,7 @@ const ParroquiasTopicosBars: React.FC<ParroquiasTopicosBarsProps> = ({
         numbers.push(topico.total);
       });
       data.push({
+        title: parroquia.codigo,
         labels: labels, // Etiquetas de parroquias
         datasets: [
           {
@@ -98,7 +100,7 @@ const ParroquiasTopicosBars: React.FC<ParroquiasTopicosBarsProps> = ({
             <div className="card bg-base-100 shadow-xl ">
               <div className="card-body">
                 <h2 className="card-title">
-                  {parroquias_json != undefined ? parroquias_json[index].nombre.toUpperCase() : ""}
+                  {parroquias_json != undefined ? parroquias_json[dataset.title].nombre.toUpperCase() : ""}
                 </h2>
               </div>
               <figure>

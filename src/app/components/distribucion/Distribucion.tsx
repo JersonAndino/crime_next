@@ -65,11 +65,11 @@ const Distribucion: React.FC<DistribucionProps> = ({
           size: 20,
           weight: "bold",
         },
-        // formatter: (value) => {
-        //   return (
-        //     ((parseFloat(value) * 100) / parseFloat(total)).toFixed(1) + "%"
-        //   );
-        // },
+        formatter: (value) => {
+          return (
+            ((parseFloat(value) * 100) / parseFloat(total != undefined ? total.toString() : '100')).toFixed(1) + "%"
+          );
+        },
       },
     },
   };

@@ -353,6 +353,7 @@ export default function ParroquiasTab() {
           {!errorData && (
             <ParroquiasTopicosBars
               parroquias_topicos_counts={data?.data.parroquias_topicos_counts}
+              parroquias_json={parroquiasJSON}
             />
           )}
           {errorData && (
