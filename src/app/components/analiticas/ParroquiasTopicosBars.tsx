@@ -29,8 +29,8 @@ const ParroquiasTopicosBars: React.FC<ParroquiasTopicosBarsProps> = ({
   if (parroquias_topicos_counts != undefined) {
     // console.log(parroquias_vs_topics);
     parroquias_topicos_counts.map((parroquia) => {
-      let labels: string[] = [];
-      let numbers: number[] = [];
+      const labels: string[] = [];
+      const numbers: number[] = [];
       parroquia.topicos.map((topico) => {
         labels.push(topico.codigo.toString());
         numbers.push(topico.total);

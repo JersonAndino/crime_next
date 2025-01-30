@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ParroquiaSVG } from "@/types/parroquia";
 import { CountResponse } from "@/types/response";
 
@@ -17,7 +17,7 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
   const defaultStroke = "#ffffff";
   const defaultStrokeWidth = "5";
   const parametroZoom = 0.02;
-  const colors: {[key: number]: string} = {
+  const colors: {[key: number]: string} = useMemo(() => ({
     27: "#FF0000",
     24: "#FF1919",
     21: "#FF3333",
@@ -27,8 +27,8 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
     9: "#FF9999",
     6: "#FFB3B3",
     3: "#FFCCCC",
-  };
-  const parroquias: ParroquiasMap = {
+  }), []);
+  const parroquias: ParroquiasMap = useMemo(() => ({
     1: {
       id: "svg-calderon",
       d: "M 615.5,22 H 653 L 647.5,3 h 42 l 9,14.5 h 27 L 763,33 v 39 h 53.5 L 879,123.5 V 146 h 25 l 36,38.5 h 33 l 24.5,29 -8.5,6.5 -21.5,3 v 50.5 l -6.5,56 -12,29.5 7.5,5.5 H 980 l -7,21.5 -5.5,37.5 -15.5,57 V 510 l -20.5,29 v 37 l -17,32 -9.5,16.5 -14.5,5.5 -6,8 13.5,4 16.5,9.5 21,16 8.5,11.5 12.5,90.5 -25,20 -4,13 -5,15.5 v 27 l -9.5,14.5 14.5,14 v 15 l -5,14.5 -19.5,23 -12,5 -6.5,2 v -18.5 l -13,-15 H 858 l -2.5,-26 -37.5,-44.5 -32.5,-26.5 -24,-13 -16,36.5 v 13 l 19.5,24 4.5,10.5 V 907 l 34.5,34.5 31.5,41 24.5,32.5 3,6.5 5,28 9,21 9.5,19 8,16 6,6.5 -7.5,9 -16,12.5 -14,5.5 -15.5,-2 -6.5,6 -5.5,2.5 -2,5.5 h 20 v 15.5 c -1.833,-2 -5.2,-3.7 -4,5.5 1.5,11.5 0,15 0,2 0,-10.4 3.667,10 5.5,21.5 l 6.5,15.5 3.5,13 v 13 l -7.5,10.5 9.5,18 -2,22.5 c 0.833,4.67 5,13.9 15,13.5 12.5,-0.5 39.5,31.5 41.5,40.5 1.6,7.2 25,5.67 36.5,4 7,7.67 19.7,28 14.5,48 -5.2,20 -22.167,40.67 -30,48.5 -2.833,3.33 -8.3,13.3 -7.5,26.5 1,16.5 -16.5,15.5 -20,15 -3.5,-0.5 -23.5,-14 -27,-23 -2.8,-7.2 -15.167,-13 -21,-15 -4.333,-2.5 -13.3,-8.7 -14.5,-13.5 -1.5,-6 -3.5,-15 -14,-16.5 -8.4,-1.2 -20.833,-6.5 -26,-9 l -19.5,-6.5 -15,-6.5 -11.5,-5.5 -13.5,-7 -7,5.5 h -51 c -0.333,-2 -3.5,-6.3 -13.5,-7.5 -10,-1.2 -55.833,-0.5 -77.5,0 -5.333,-3.17 -18.7,-9.9 -29.5,-11.5 -13.5,-2 -11.5,-11.5 -12,-15.5 -0.5,-4 -33.5,-34.5 -50.5,-43.5 -17,-9 -22,-19.5 -23,-21 -1,-1.5 -27,-12.5 -34.5,-26 -6,-10.8 -36.833,-14.5 -51.5,-15 h -30 c -8,3.33 -27.3,8 -40.5,0 -16.5,-10 -8.5,-13 -25,-13 -16.5,0 -27,0 -42.5,-9 -15.5,-9 -24.5,2 -38,-12.5 -10.8,-11.6 -27.167,-31.17 -34,-39.5 l -34,-23 -47.5,-37 -12,-7 -22.5,-20 c 1.8333,0 2.4,0 -10,0 -12.4,0 -28.1667,0 -34.5,0 l -11,-19 -10,-19.5 -2.5,-8 18.5,10 -3,-28.5 v -21 l -13,-12 -7,-11.5 c 9.8333,-3.333 33.2,-14 48,-30 18.5,-20 42.5,-42 47,-76.5 3.6,-27.6 7.833,-41.833 9.5,-45.5 2.333,-9.667 4.3,-38.3 -6.5,-75.5 -13.5,-46.5 -16,-77 19.5,-109 28.4,-25.6 39.833,-56 42,-68 l 11.5,-21.5 10.5,-9 c 2.5,-12.333 6,-41.8 0,-61 -6,-19.2 -2.5,-29.667 0,-32.5 l 8.5,-12 -8.5,-12.5 -2,-45 -28,-26 -18,-12 -10.5,-10 8,-18 2.5,-34 -10.5,-13.5 v -39.5 l -8.5,-8 8.5,-16 c -10.167,-2.833 -28.8,-10.1 -22,-16.5 6.8,-6.4 13.5,-6.667 16,-6 l 32,3.5 2.5,11 43,3 c -2.833,9.833 -6.8,32.2 0,43 6.8,10.8 11.833,16.833 13.5,18.5 H 231 c 9.333,0.5 27.6,10 26,44 -1.6,34 35,47.833 53.5,50.5 18.333,-1.5 52.1,-13.2 40.5,-48 -11.6,-34.8 19.833,-31.167 37,-25 l 4.5,-67.5 45,-21.5 V 175 c 9.333,-5.167 28,-16.5 28,-20.5 0,-4 0,-12.333 0,-16 l -15,-7.5 V 102 L 455,79.5 472,71 479.5,49 499,45 514.5,58.5 553,42 c 3.333,2 13.8,5.4 29,3 15.2,-2.4 22.333,-6.3333 24,-8 l 2.5,-13 z",
@@ -260,13 +260,13 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
       transform_2: "",
       fill: defaultFillColor,
     },
-  };
+  }), []);
 
-  const createNewTransform = (transform: String) => {
+  const createNewTransform = (transform: string) => {
     const transform_array = transform.split(",");
     let valor_1 = parseFloat(transform_array[0].split("(")[1]);
-    let valor_2 = parseFloat(transform_array[1]);
-    let valor_3 = parseFloat(transform_array[2]);
+    const valor_2 = parseFloat(transform_array[1]);
+    const valor_3 = parseFloat(transform_array[2]);
     let valor_4 = parseFloat(transform_array[3]);
     let valor_5 = parseFloat(transform_array[4]);
     let valor_6 = parseFloat(transform_array[5].split(")")[0]);
@@ -282,7 +282,7 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
   const [parroquiasMap, setParroquiasMap] = useState<ParroquiasMap>(parroquias);
 
   Object.keys(parroquias).forEach((parroquia) => {
-    let transform_2 = createNewTransform(
+    const transform_2 = createNewTransform(
       parroquias[parseInt(parroquia)].transform
     );
     parroquias[parseInt(parroquia)].transform_2 = transform_2;
@@ -293,10 +293,10 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
     } else {
       parroquias_counts.forEach((parroquia) => {
         if (parroquias[parroquia.codigo] != undefined) {
-          let scale =
+          const scale =
             parroquia.total / num_dias;
           let scale_parroquia = 5;
-          for (let key in colors) {
+          for (const key in colors) {
             if (scale < parseInt(key)) {
               scale_parroquia = parseInt(key);
               break;
@@ -307,9 +307,9 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
       });
       setParroquiasMap(parroquias);
     }
-  }, [parroquias_counts]);
+  }, [parroquias_counts, colors, num_dias, parroquias]);
 
-  const reordenarParroquias = (indice: number, parroquias: ParroquiasMap) => {
+  const reordenarParroquias = (indice: number) => {
     const nuevoOrden: ParroquiasMap = parroquiasMap;
     const parroquiaAux = parroquiasMap[indice];
     // nuevoOrden[indice] = parroquiasMap[33];
@@ -318,27 +318,27 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
   }
 
     const handleHoverPath = (row: number, transform: string) => {
-      reordenarParroquias(row, parroquiasMap)
+      reordenarParroquias(row)
       const updatedParroquiasMap = { ...parroquiasMap };
       updatedParroquiasMap[row].transform = updatedParroquiasMap[row].transform_2;
       updatedParroquiasMap[row].transform_2 = transform;
       setParroquiasMap(updatedParroquiasMap);
     };
 
-    const handleHoverPathLeave = (row: number, transform: string) => {
-      reordenarParroquias(row, parroquiasMap)
-      const updatedParroquiasMap = { ...parroquiasMap };
-      updatedParroquiasMap[row].transform = updatedParroquiasMap[row].transform_2;
-      updatedParroquiasMap[row].transform_2 = transform;
-      setParroquiasMap(updatedParroquiasMap);
-    };
+    // const handleHoverPathLeave = (row: number, transform: string) => {
+    //   reordenarParroquias(row)
+    //   const updatedParroquiasMap = { ...parroquiasMap };
+    //   updatedParroquiasMap[row].transform = updatedParroquiasMap[row].transform_2;
+    //   updatedParroquiasMap[row].transform_2 = transform;
+    //   setParroquiasMap(updatedParroquiasMap);
+    // };
 
-    const handleClick = (event: React.MouseEvent<SVGAElement>, row: number) => {
-      event.preventDefault();
-      const updatedParroquiasMap = { ...parroquiasMap };
-      updatedParroquiasMap[row].fill = "green";
-      setParroquiasMap(updatedParroquiasMap);
-    };
+    // const handleClick = (event: React.MouseEvent<SVGAElement>, row: number) => {
+    //   event.preventDefault();
+    //   const updatedParroquiasMap = { ...parroquiasMap };
+    //   updatedParroquiasMap[row].fill = "green";
+    //   setParroquiasMap(updatedParroquiasMap);
+    // };
 
   return (
     <section className="Map">

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Topico } from "@/types/topico";
-import { Parroquia, ParroquiasJSON } from "@/types/parroquia";
+import { ParroquiasJSON } from "@/types/parroquia";
 import { fetchTopicos } from "@/services/topicoService";
 import { fetchParroquias } from "@/services/parroquiaService";
 import { PostMapResponse} from "@/types/response";
@@ -16,9 +16,9 @@ export default function MapaTab() {
   const [fechaFin, setFechaFin] = useState("");
   const [parroquias, setParroquias] = useState<ParroquiasJSON>();
   const [topicos, setTopicos] = useState<Topico[]>([]);
-  const [loadingParroquias, setLoadingParroquias] = useState<boolean>(false);
+  // const [loadingParroquias, setLoadingParroquias] = useState<boolean>(false);
   const [loadingTopicos, setLoadingTopicos] = useState<boolean>(false);
-  const [errorParroquias, setErrorParroquias] = useState<string | null>(null);
+  // const [errorParroquias, setErrorParroquias] = useState<string | null>(null);
   const [errorTopicos, setErrorTopicos] = useState<string | null>(null);
 
   const [data, setData] = useState<PostMapResponse>();
@@ -29,8 +29,8 @@ export default function MapaTab() {
 
   useEffect(() => {
     const loadParroquias = async () => {
-      setLoadingParroquias(true);
-      setErrorParroquias(null);
+      // setLoadingParroquias(true);
+      // setErrorParroquias(null);
       try {
         const data = await fetchParroquias();
         const parroquiasJSON: ParroquiasJSON = {}
@@ -38,10 +38,12 @@ export default function MapaTab() {
           parroquiasJSON[parroquia.codigo] = parroquia;
         })
         setParroquias(parroquiasJSON);
-      } catch (err: any) {
-        setErrorParroquias(err.message);
-      } finally {
-        setLoadingParroquias(false);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.log(err.message);
+        } else {
+          console.log("Ocurrió un error inesperado.");
+        }
       }
     };
 
@@ -59,8 +61,12 @@ export default function MapaTab() {
         }else{
           setTopicos(data.data);
         }
-      } catch (err: any) {
-        setErrorTopicos(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setErrorTopicos(err.message);
+        } else {
+          setErrorTopicos("Ocurrió un error inesperado.");
+        }
       } finally {
         setLoadingTopicos(false);
       }
@@ -88,10 +94,14 @@ export default function MapaTab() {
         }else{
           setData(response);
         }
-      } catch (error: any) {
-        setErrorData(error.message)
-        console.error("Error al enviar datos:", error);
-      }finally {
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setErrorData(err.message)
+          console.error("Error al enviar datos:", err);
+        } else {
+          setErrorData("Ocurrió un error inesperado.");
+        }
+      } finally {
         setLoadingData(false);
       }
     };

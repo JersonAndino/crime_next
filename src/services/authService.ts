@@ -7,6 +7,7 @@ export const isAuthenticated = (): boolean => {
       const isTokenExpired = decoded.exp < Date.now() / 1000;
       return !isTokenExpired;
     } catch (error) {
+      console.log(error);
       return false;
     }
   };

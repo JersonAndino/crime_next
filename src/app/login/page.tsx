@@ -22,8 +22,12 @@ const Login = () => {
             localStorage.setItem("refreshToken", refresh);
             setMessage(response.data.message);
             router.push('/admin');
-        } catch (error: any) {
-            setMessage(error.response?.data?.error || 'Login failed');
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+              setMessage(err.message);
+            } else {
+              setMessage("Ocurrió un error inesperado.");
+            }
         }
     };
 

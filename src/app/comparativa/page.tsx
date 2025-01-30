@@ -19,8 +19,6 @@ export default function ComparativaTab() {
   const [errorParroquias, setErrorParroquias] = useState<string | null>(null);
   const [errorTopicos, setErrorTopicos] = useState<string | null>(null);
 
-  const [selectedTopics, setSelectedTopics] = useState([1]);
-  const [selectedParroquias, setSelectedParroquias] = useState([1]);
 
   const [selectedTopic, setSelectedTopic] = useState(2);
   const [selectedParroquia, setSelectedParroquia] = useState(0);
@@ -41,8 +39,12 @@ export default function ComparativaTab() {
         }else{
           setParroquias(data.data);
         }
-      } catch (err: any) {
-        setErrorParroquias(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setErrorParroquias(err.message);
+        } else {
+          setErrorParroquias("Ocurrió un error inesperado.");
+        }
       } finally {
         setLoadingParroquias(false);
       }
@@ -62,8 +64,12 @@ export default function ComparativaTab() {
         }else{
           setTopicos(data.data);
         }
-      } catch (err: any) {
-        setErrorTopicos(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setErrorTopicos(err.message);
+        } else {
+          setErrorTopicos("Ocurrió un error inesperado.");
+        }
       } finally {
         setLoadingTopicos(false);
       }
@@ -108,15 +114,7 @@ export default function ComparativaTab() {
     const { value } = event.target;
     setMeses(parseInt(value));
   };
-
-  const handleFechaFinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setFechaFin(value);
-    if (fechaInicio && value < fechaInicio) {
-      setFechaInicio(value);
-    }
-  };
-
+  
   const getCurrentDate = () => {
     const today = new Date();
     return today.toISOString().split("T")[0];
@@ -145,14 +143,6 @@ export default function ComparativaTab() {
     sendData();
   };
 
-  const toggleSelectAllTopics = () => {
-    if (selectedTopics.length === topicos.length) {
-      setSelectedTopics([]);
-    } else {
-      setSelectedTopics(topicos.map((item) => item.codigo));
-    }
-  };
-
   const handleClickRadioTopico = (
     event: React.MouseEvent<HTMLInputElement>
   ) => {
@@ -166,48 +156,10 @@ export default function ComparativaTab() {
     const inputElement = event.target as HTMLInputElement;
     setSelectedParroquia(parseInt(inputElement.value));
   };
-
-  const handleCheckboxTopicChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, checked } = event.target;
-
-    setSelectedTopics((prevState) =>
-      checked
-        ? [...prevState, parseInt(name)]
-        : prevState.filter((item) => item !== parseInt(name))
-    );
-  };
-
-  const toggleSelectAllParroquias = () => {
-    if (selectedParroquias.length === parroquias.length) {
-      setSelectedParroquias([]);
-    } else {
-      setSelectedParroquias(parroquias.map((item) => item.codigo));
-    }
-  };
-
-  const handleCheckboxParroquiaChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, checked } = event.target;
-
-    setSelectedParroquias((prevState) =>
-      checked
-        ? [...prevState, parseInt(name)]
-        : prevState.filter((item) => item !== parseInt(name))
-    );
-  };
-
-  const handleCheckboxGraficaChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  
+  const handleCheckboxGraficaChange = () => {
     setGrafica(!grafica);
   };
-
-  const isSelectAllTopicosChecked = selectedTopics.length === topicos.length;
-  const isSelectAllParroquiasChecked =
-    selectedParroquias.length === parroquias.length;
 
   return (
     <div className="grid grid-cols-12">

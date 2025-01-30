@@ -24,7 +24,7 @@ export default function ParroquiasTab() {
   const [selectedTopics, setSelectedTopics] = useState([1]);
   const [selectedParroquias, setSelectedParroquias] = useState([1]);
   const [data, setData] = useState<PostAnaliticResponse>();
-  const [loadingData, setLoadingData] = useState<boolean>(false);
+  // const [loadingData, setLoadingData] = useState<boolean>(false);
   const [errorData, setErrorData] = useState<string | null>(null);
 
   useEffect(() => {
@@ -43,8 +43,12 @@ export default function ParroquiasTab() {
           setParroquiasJSON(parroquiasJson);
           setParroquias(data.data);
         }
-      } catch (err: any) {
-        setErrorParroquias(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setErrorParroquias(err.message);
+        } else {
+          setErrorParroquias("Ocurrió un error inesperado.");
+        }
       } finally {
         setLoadingParroquias(false);
       }
@@ -64,8 +68,12 @@ export default function ParroquiasTab() {
         }else{
           setTopicos(data.data);
         }
-      } catch (err: any) {
-        setErrorTopicos(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setErrorTopicos(err.message);
+        } else {
+          setErrorTopicos("Ocurrió un error inesperado.");
+        }
       } finally {
         setLoadingTopicos(false);
       }
@@ -95,9 +103,13 @@ export default function ParroquiasTab() {
         }else{
           setData(response);
         }
-      } catch (error: any) {
-        setErrorData(error.message)
-        console.error("Error al enviar datos:", error);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setErrorData(err.message);
+          console.error("Error al enviar datos:", err.message);
+        } else {
+          setErrorData("Ocurrió un error inesperado.");
+        }
       }
     };
     sendData();

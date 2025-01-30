@@ -33,8 +33,8 @@ const ComparacionLineasCompleto: React.FC<ComparativeLineasCompletoProps> = ({
   totales_antes,
   totales_despues,
 }) => {
-  const counts_antes: any[] = [];
-  const counts_despues: any[] = [];
+  const counts_antes: (number|null)[] = [];
+  const counts_despues: (number|null)[] = [];
 
   if (totales_antes != undefined) {
     totales_antes.map((total, index) => {

@@ -9,7 +9,7 @@ const Admin = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [file, setFile] = useState<File | null>(null);
-    const [fileType, setFileType] = useState<string>("HECHO");
+    const fileType = "HECHO";
     const [uploadMessage, setUploadMessage] = useState<string>("");
 
     useEffect(() => {

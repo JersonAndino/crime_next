@@ -17,11 +17,18 @@ class ApiService {
     try {
       const response = await this.api.post<T>(endpoint, data);
       return response.data;
-    } catch (error: any) {
-      console.error("Error en el POST:", error.response || error.message);
-      throw new Error(error.response?.data?.message || "Error en la solicitud");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error en el POST (Axios):", error.response);
+        const errorMessage = error.response?.data?.message || "Error en la solicitud con Axios";
+        throw new Error(errorMessage);
+      } else {
+        console.error("Error desconocido:", error);
+        throw new Error("Ocurrió un error inesperado");
+      }
     }
   }
 }
 
-export default new ApiService();
+const apiService = new ApiService();
+export default apiService;

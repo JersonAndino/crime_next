@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Topico, TopicosJSON } from "@/types/topico";
-import { Parroquia } from "@/types/parroquia";
+// import { Parroquia } from "@/types/parroquia";
 import { fetchTopicos } from "@/services/topicoService";
-import { fetchParroquias } from "@/services/parroquiaService";
+// import { fetchParroquias } from "@/services/parroquiaService";
 import { PostDistribucionResponse } from "@/types/response";
 
 import ApiService from "@/services/hechoService";
@@ -18,7 +18,7 @@ export default function DistribucionTab() {
   const [loadingTopicos, setLoadingTopicos] = useState<boolean>(false);
   const [errorTopicos, setErrorTopicos] = useState<string | null>(null);
   const [data, setData] = useState<PostDistribucionResponse>();
-  const [loadingData, setLoadingData] = useState<boolean>(false);
+  // const [loadingData, setLoadingData] = useState<boolean>(false);
   const [errorData, setErrorData] = useState<string | null>(null);
 
   const [selectedTopics, setSelectedTopics] = useState([1]);
@@ -40,8 +40,12 @@ export default function DistribucionTab() {
           setTopicosJSON(topicosJSON);
           setTopicos(data.data);
         }
-      } catch (err: any) {
-        setErrorTopicos(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setErrorTopicos(err.message);
+        } else {
+          setErrorTopicos("Ocurrió un error inesperado.");
+        }
       } finally {
         setLoadingTopicos(false);
       }

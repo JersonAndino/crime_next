@@ -40,16 +40,16 @@ const ParroquiasBars: React.FC<ParroquiasBarsProps> = ({
         getComputedStyle(document.documentElement)
           .getPropertyValue(variable)
           .trim();
-      const convertOklchToRgb = (color_lhc: string): string => {
-        const l = parseFloat(color_lhc.split(" ")[0]) / 100;
-        const c = parseFloat(color_lhc.split(" ")[1]);
-        const h = parseFloat(color_lhc.split(" ")[2]);
-        const hue = h * (Math.PI / 180); // Convertir a radianes
-        const r = Math.max(0, Math.min(1, l + c * Math.cos(hue)));
-        const g = Math.max(0, Math.min(1, l + c * Math.sin(hue)));
-        const b = Math.max(0, Math.min(1, l - c)); // Simplificación
-        return `rgb(${r * 255}, ${g * 255}, ${b * 255})`;
-      };
+      // const convertOklchToRgb = (color_lhc: string): string => {
+      //   const l = parseFloat(color_lhc.split(" ")[0]) / 100;
+      //   const c = parseFloat(color_lhc.split(" ")[1]);
+      //   const h = parseFloat(color_lhc.split(" ")[2]);
+      //   const hue = h * (Math.PI / 180); // Convertir a radianes
+      //   const r = Math.max(0, Math.min(1, l + c * Math.cos(hue)));
+      //   const g = Math.max(0, Math.min(1, l + c * Math.sin(hue)));
+      //   const b = Math.max(0, Math.min(1, l - c)); // Simplificación
+      //   return `rgb(${r * 255}, ${g * 255}, ${b * 255})`;
+      // };
       const colors = [
         getCSSVariable("--n"),
         getCSSVariable("--b1"),
