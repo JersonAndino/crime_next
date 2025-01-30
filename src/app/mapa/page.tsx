@@ -31,6 +31,7 @@ export default function MapaTab() {
     const loadParroquias = async () => {
       // setLoadingParroquias(true);
       // setErrorParroquias(null);
+      console.log("parroquias");
       try {
         const data = await fetchParroquias();
         const parroquiasJSON: ParroquiasJSON = {}
@@ -198,7 +199,7 @@ export default function MapaTab() {
                 <p className="text-red-500 p-[10px]">Error al cargar los topicos</p>
               )}
               {!loadingTopicos &&
-                !errorTopicos &&
+                !errorTopicos && topicos.length > 0 &&
                 topicos.map((topico) => (
                   <div key={topico.codigo}>
                     <label className="label cursor-pointer">
