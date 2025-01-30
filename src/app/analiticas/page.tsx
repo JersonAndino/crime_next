@@ -212,7 +212,7 @@ export default function ParroquiasTab() {
           <div>
             <div className="collapse-title text-xl font-medium">Fechas</div>
             <div>
-              <label htmlFor="fechaInicio">Fecha Inicio:</label>
+              <label htmlFor="fechaInicio">Fecha de Inicio:</label>
               <input
                 className="input w-full max-w-xs"
                 type="date"
@@ -224,7 +224,7 @@ export default function ParroquiasTab() {
               />
             </div>
             <div>
-              <label htmlFor="fechaFin">Fecha Fin:</label>
+              <label htmlFor="fechaFin">Fecha de Fin:</label>
               <input
                 className="input w-full max-w-xs"
                 type="date"
@@ -291,12 +291,12 @@ export default function ParroquiasTab() {
             <div className="divider m-0"></div>
             <div className="collapse collapse-arrow bg-base-100">
               <input type="radio" name="accordion-parroquias" />
-              <div className="collapse-title text-xl font-medium">Topicos</div>
+              <div className="collapse-title text-xl font-medium">Tópicos</div>
               <div className="collapse-content">
                 <div className="h-96 overflow-y-auto">
                   {loadingTopicos && <SkeletonLoader />}
                   {errorTopicos && (
-                    <p className="text-red-500 p-[10px]">Error al cargar los topicos</p>
+                    <p className="text-red-500 p-[10px]">Error al cargar los tópicos</p>
                   )}
                   {!loadingTopicos && !errorTopicos && (
                     <div className="">
@@ -344,7 +344,7 @@ export default function ParroquiasTab() {
       <div className="col-span-9 grid grid-cols-12">
         <div className="col-span-12">
           <h1 className="text-center text-xl font-medium">
-            VISUALIZACION DE TOPICOS POR PARROQUIA
+            VISUALIZACIÓN DE TÓPICOS POR PARROQUIA
           </h1>
         </div>
         <p className="col-span-12 px-[100px] py-[20px]">

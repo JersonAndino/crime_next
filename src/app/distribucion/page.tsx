@@ -157,7 +157,7 @@ export default function DistribucionTab() {
           <div>
             <div className="collapse-title text-xl font-medium">Fechas</div>
             <div>
-              <label htmlFor="fechaInicio">Fecha Inicio:</label>
+              <label htmlFor="fechaInicio">Fecha de Inicio:</label>
               <input
                 className="input w-full max-w-xs"
                 type="date"
@@ -169,7 +169,7 @@ export default function DistribucionTab() {
               />
             </div>
             <div>
-              <label htmlFor="fechaFin">Fecha Fin:</label>
+              <label htmlFor="fechaFin">Fecha de Fin:</label>
               <input
                 className="input w-full max-w-xs"
                 type="date"
@@ -184,10 +184,10 @@ export default function DistribucionTab() {
           </div>
           <div className="divider m-0"></div>
           <form onSubmit={handleSubmit}>
-            <div className="collapse-title text-xl font-medium">Topicos</div>
+            <div className="collapse-title text-xl font-medium">Tópicos</div>
             {loadingTopicos && <SkeletonLoader />}
             {errorTopicos && (
-              <p className="text-red-500 p-[10px]">Error al cargar los topicos</p>
+              <p className="text-red-500 p-[10px]">Error al cargar los tópicos</p>
             )}
             {!loadingTopicos && !errorTopicos && (
               <div className="">
@@ -232,7 +232,7 @@ export default function DistribucionTab() {
       <div className="col-span-9 grid grid-cols-12">
         <div className="col-span-12">
           <h1 className=" text-xl font-medium text-center">
-            DISTRIBUCION DE TOPICOS
+            DISTRIBUCIÓN DE TÓPICOS
           </h1>
         </div>
         {!errorData && (

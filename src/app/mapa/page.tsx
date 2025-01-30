@@ -165,7 +165,7 @@ export default function MapaTab() {
           <div>
             <div className="collapse-title text-xl font-medium">Fechas</div>
             <div>
-              <label htmlFor="fechaInicio">Fecha Inicio:</label>
+              <label htmlFor="fechaInicio">Fecha de Inicio:</label>
               <input
                 className="input w-full max-w-xs"
                 type="date"
@@ -177,7 +177,7 @@ export default function MapaTab() {
               />
             </div>
             <div>
-              <label htmlFor="fechaFin">Fecha Fin:</label>
+              <label htmlFor="fechaFin">Fecha de Fin:</label>
               <input
                 className="input w-full max-w-xs"
                 type="date"

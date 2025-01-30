@@ -312,26 +312,26 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
   const reordenarParroquias = (indice: number) => {
     const nuevoOrden: ParroquiasMap = parroquiasMap;
     const parroquiaAux = parroquiasMap[indice];
-    // nuevoOrden[indice] = parroquiasMap[33];
-    nuevoOrden[33] = parroquiaAux;
+    // nuevoOrden[indice] = parroquiasMap[34];
+    nuevoOrden[34] = parroquiaAux;
     setParroquiasMap(nuevoOrden);
   }
 
     const handleHoverPath = (row: number, transform: string) => {
-      reordenarParroquias(row)
+      // reordenarParroquias(row);
       const updatedParroquiasMap = { ...parroquiasMap };
       updatedParroquiasMap[row].transform = updatedParroquiasMap[row].transform_2;
       updatedParroquiasMap[row].transform_2 = transform;
       setParroquiasMap(updatedParroquiasMap);
     };
 
-    // const handleHoverPathLeave = (row: number, transform: string) => {
-    //   reordenarParroquias(row)
-    //   const updatedParroquiasMap = { ...parroquiasMap };
-    //   updatedParroquiasMap[row].transform = updatedParroquiasMap[row].transform_2;
-    //   updatedParroquiasMap[row].transform_2 = transform;
-    //   setParroquiasMap(updatedParroquiasMap);
-    // };
+    const handleHoverPathLeave = (row: number, transform: string) => {
+      // reordenarParroquias(row)
+      const updatedParroquiasMap = { ...parroquiasMap };
+      updatedParroquiasMap[row].transform = updatedParroquiasMap[row].transform_2;
+      updatedParroquiasMap[row].transform_2 = transform;
+      setParroquiasMap(updatedParroquiasMap);
+    };
 
     // const handleClick = (event: React.MouseEvent<SVGAElement>, row: number) => {
     //   event.preventDefault();
@@ -367,7 +367,7 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
                   handleHoverPath(parseInt(row), parroquiasMap[parseInt(row)].transform)
                 }
                 onMouseLeave={() =>
-                  handleHoverPath(parseInt(row), parroquiasMap[parseInt(row)].transform)
+                  handleHoverPathLeave(parseInt(row), parroquiasMap[parseInt(row)].transform)
                 }
                 key={parroquiasMap[parseInt(row)].id}
                 id={parroquiasMap[parseInt(row)].id}

@@ -55,7 +55,7 @@ const Tabs = () => {
             role="tab"
             className={`tab ${pathname === "/distribucion" ? "tab-active" : ""}`}
           >
-            <span className="text-xl font-medium">Distribucion</span>
+            <span className="text-xl font-medium">Distribución</span>
           </Link>
           <Link
             href="/analiticas"
@@ -69,7 +69,7 @@ const Tabs = () => {
             role="tab"
             className={`tab ${pathname === "/comparativa" ? "tab-active" : ""}`}
           >
-            <span className="text-xl font-medium">Comparacion</span>
+            <span className="text-xl font-medium">Comparación</span>
           </Link>
         </div>
       </div>

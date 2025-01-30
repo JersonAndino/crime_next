@@ -168,7 +168,7 @@ export default function ComparativaTab() {
           <div>
             <div className="collapse-title text-xl font-medium">Fechas</div>
             <div>
-              <label htmlFor="fechaInicio">Fecha Inicio:</label>
+              <label htmlFor="fechaInicio">Fecha de Evento:</label>
               <input
                 className="input w-full max-w-xs"
                 type="date"
@@ -234,12 +234,12 @@ export default function ComparativaTab() {
             <div className="divider m-0"></div>
             <div className="collapse collapse-arrow bg-base-100">
               <input type="radio" name="accordion-parroquias" />
-              <div className="collapse-title text-xl font-medium">Topicos</div>
+              <div className="collapse-title text-xl font-medium">Tópicos</div>
               <div className="collapse-content">
                 <div className="h-96 overflow-y-auto">
                   {loadingTopicos && <SkeletonLoader />}
                   {errorTopicos && (
-                    <p className="text-red-500">Error al cargar los topicos</p>
+                    <p className="text-red-500">Error al cargar los tópicos</p>
                   )}
                   {!loadingTopicos && !errorTopicos && (
                     <div className="">
@@ -274,7 +274,7 @@ export default function ComparativaTab() {
       <div className="col-span-9 grid grid-cols-12">
         <div className="col-span-12">
           <h1 className=" text-xl font-medium">
-            VISUALIZACION DE TOPICOS POR PARROQUIA
+            VISUALIZACIÓN DE TÓPICOS POR PARROQUIA
           </h1>
           <p className="px-[100px] py-[20px]">
             Este módulo te permite analizar cómo han cambiado los tweets
@@ -337,7 +337,7 @@ export default function ComparativaTab() {
           </div>
           <div className="col-span-12 grid grid-cols-11">
             <div className="col-start-4 col-span-2 text-right">
-              <h1>Grafica superpuesta</h1>
+              <h1>Gráfica superpuesta</h1>
             </div>
             <div className="col-span-1 m-auto text-center">
               <input
@@ -348,7 +348,7 @@ export default function ComparativaTab() {
               />
             </div>
             <div className="col-span-2">
-              <h1>Grafica completa</h1>
+              <h1>Gráfica completa</h1>
             </div>
           </div>
         </div>
