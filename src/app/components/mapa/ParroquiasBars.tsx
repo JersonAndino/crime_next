@@ -10,7 +10,7 @@ import {
   ChartOptions,
 } from "chart.js";
 import { useState, useEffect } from "react";
-import { ParroquiaResponse } from "@/types/response";
+import { CountResponse } from "@/types/response";
 import { ParroquiasJSON } from "@/types/parroquia";
 
 ChartJS.register(
@@ -23,13 +23,9 @@ ChartJS.register(
 );
 
 type ParroquiasBarsProps = {
-  parroquias_counts?: ParroquiaResponse[];
+  parroquias_counts?: CountResponse[];
   parroquias_json?: ParroquiasJSON;
 };
-
-//   type ParroquiasMap = {
-//     [key: number]: ParroquiaSVG;
-//   };
 
 const ParroquiasBars: React.FC<ParroquiasBarsProps> = ({
   parroquias_counts,
