@@ -6,6 +6,7 @@ export interface CountResponse {
 export interface PostMapResponse {
   data: {
     parroquias_counts: CountResponse[];
+    total_parroquias: number;
     total: number;
     num_dias: number;
   };

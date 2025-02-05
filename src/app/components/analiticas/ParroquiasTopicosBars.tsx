@@ -72,7 +72,7 @@ const ParroquiasTopicosBars: React.FC<ParroquiasTopicosBarsProps> = ({
       },
       title: {
         display: true,
-        text: "Número de Tweets por Topico", // Título del gráfico
+        text: "Número de Tweets por Tópico", // Título del gráfico
       },
     },
     scales: {
@@ -86,7 +86,7 @@ const ParroquiasTopicosBars: React.FC<ParroquiasTopicosBarsProps> = ({
       x: {
         title: {
           display: true,
-          text: "Topicos",
+          text: "Tópicos",
         },
       },
     },

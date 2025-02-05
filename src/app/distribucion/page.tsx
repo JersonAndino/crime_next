@@ -235,7 +235,7 @@ export default function DistribucionTab() {
             DISTRIBUCIÓN DE TÓPICOS
           </h1>
         </div>
-        {!errorData && (
+        {!errorData && !errorTopicos && !loadingTopicos && (
           <div className="col-span-4">
           <br />
           {data?.data.topicos_counts.map((topico, index) => (
@@ -264,7 +264,7 @@ export default function DistribucionTab() {
         }
         <div className={!errorData ? "col-start-6 col-span-7": "col-span-12"}>
           <div className="block-description">
-            <p>
+            <p className="text-xl">
               Este gráfico de pastel muestra la distribución de los diferentes
               tópicos relacionados con la delincuencia en Quito, en base al
               número de tweets registrados según los filtros seleccionados:

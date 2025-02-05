@@ -288,7 +288,7 @@ export default function ComparativaTab() {
           <div className="col-span-4">
             <div className="stats w-full">
               <div className="stat">
-                <div className="stat-title text-right">
+                <div className="stat-title text-right text-xl">
                   Tweets Totales Antes del Evento
                 </div>
                 <div className="stat-value text-right">
@@ -311,7 +311,7 @@ export default function ComparativaTab() {
           <div className="col-span-4">
             <div className="stats w-full">
               <div className="stat">
-                <div className="stat-title">
+                <div className="stat-title text-xl">
                   Tweets Totales Después del evento
                 </div>
                 <div className="stat-value">{data?.data.total_despues}</div>

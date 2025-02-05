@@ -16,7 +16,7 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
   const defaultFillColor = "#adadad";
   const defaultStroke = "#ffffff";
   const defaultStrokeWidth = "5";
-  const parametroZoom = 0.02;
+  const parametroZoom = 0.03;
   const colors: {[key: number]: string} = useMemo(() => ({
     27: "#FF0000",
     24: "#FF1919",
@@ -260,7 +260,7 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
       transform_2: "",
       fill: defaultFillColor,
     },
-  }), []);
+  }), [parroquias_counts]);
 
   const createNewTransform = (transform: string) => {
     const transform_array = transform.split(",");
@@ -307,18 +307,12 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
       });
       setParroquiasMap(parroquias);
     }
-  }, [parroquias_counts, colors, num_dias, parroquias]);
+  }, [parroquias_counts]);
 
-  const reordenarParroquias = (indice: number) => {
-    const nuevoOrden: ParroquiasMap = parroquiasMap;
-    const parroquiaAux = parroquiasMap[indice];
-    // nuevoOrden[indice] = parroquiasMap[34];
-    nuevoOrden[34] = parroquiaAux;
-    setParroquiasMap(nuevoOrden);
-  }
+  
 
     const handleHoverPath = (row: number, transform: string) => {
-      // reordenarParroquias(row);
+      console.log(parroquiasMap[row]);
       const updatedParroquiasMap = { ...parroquiasMap };
       updatedParroquiasMap[row].transform = updatedParroquiasMap[row].transform_2;
       updatedParroquiasMap[row].transform_2 = transform;
@@ -326,7 +320,6 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
     };
 
     const handleHoverPathLeave = (row: number, transform: string) => {
-      // reordenarParroquias(row)
       const updatedParroquiasMap = { ...parroquiasMap };
       updatedParroquiasMap[row].transform = updatedParroquiasMap[row].transform_2;
       updatedParroquiasMap[row].transform_2 = transform;

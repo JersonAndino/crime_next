@@ -318,7 +318,7 @@ export default function ParroquiasTab() {
                       {topicos.map((item) => (
                         <div key={item.codigo}>
                           <label className="label cursor-pointer">
-                            <span className="label-text">{item.nombre}</span>
+                            <span className="label-text">{item.codigo}. {item.nombre}</span>
                             <input
                               className="checkbox"
                               type="checkbox"

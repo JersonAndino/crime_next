@@ -4,7 +4,7 @@ import { Topico } from "@/types/topico";
 import { ParroquiasJSON } from "@/types/parroquia";
 import { fetchTopicos } from "@/services/topicoService";
 import { fetchParroquias } from "@/services/parroquiaService";
-import { PostMapResponse} from "@/types/response";
+import { PostMapResponse } from "@/types/response";
 
 import ApiService from "@/services/hechoService";
 import Mapa from "../components/mapa/Mapa";
@@ -34,10 +34,10 @@ export default function MapaTab() {
       console.log("parroquias");
       try {
         const data = await fetchParroquias();
-        const parroquiasJSON: ParroquiasJSON = {}
+        const parroquiasJSON: ParroquiasJSON = {};
         data.data.forEach((parroquia) => {
           parroquiasJSON[parroquia.codigo] = parroquia;
-        })
+        });
         setParroquias(parroquiasJSON);
       } catch (err: unknown) {
         if (err instanceof Error) {
@@ -59,7 +59,7 @@ export default function MapaTab() {
         const data = await fetchTopicos();
         if (data.data.length == 0) {
           setErrorTopicos("No se recupero ningún tópico.");
-        }else{
+        } else {
           setTopicos(data.data);
         }
       } catch (err: unknown) {
@@ -80,24 +80,25 @@ export default function MapaTab() {
     const sendData = async () => {
       try {
         setLoadingData(true);
+        setErrorData(null);
         const data = {
           fecha_inicio: fechaInicio,
           fecha_fin: fechaFin,
           topico_id: selectedTopic,
         };
-
+        console.log(data);
         const response = await ApiService.post<PostMapResponse>(
           "/api/hechos_map/",
           data
         );
-        if (response.data.total == null){
-          setErrorData("No se ha podido recuperar la información.")  
-        }else{
+        if (response.data.total == null) {
+          setErrorData("No se ha podido recuperar la información.");
+        } else {
           setData(response);
         }
       } catch (err: unknown) {
         if (err instanceof Error) {
-          setErrorData(err.message)
+          setErrorData(err.message);
           console.error("Error al enviar datos:", err);
         } else {
           setErrorData("Ocurrió un error inesperado.");
@@ -141,18 +142,32 @@ export default function MapaTab() {
     event.preventDefault();
     const sendData = async () => {
       try {
+        setLoadingData(true);
+        setErrorData(null);
         const data = {
           fecha_inicio: fechaInicio,
           fecha_fin: fechaFin,
           topico_id: selectedTopic,
         };
+
         const response = await ApiService.post<PostMapResponse>(
           "/api/hechos_map/",
           data
         );
-        setData(response);
-      } catch (error) {
-        console.error("Error al enviar datos:", error);
+        if (response.data.total == null) {
+          setErrorData("No se ha podido recuperar la información.");
+        } else {
+          setData(response);
+        }
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setErrorData(err.message);
+          console.error("Error al enviar datos:", err);
+        } else {
+          setErrorData("Ocurrió un error inesperado.");
+        }
+      } finally {
+        setLoadingData(false);
       }
     };
     sendData();
@@ -196,10 +211,13 @@ export default function MapaTab() {
               <div className="collapse-title text-xl font-medium">Tópicos</div>
               {loadingTopicos && <SkeletonLoader />}
               {errorTopicos && (
-                <p className="text-red-500 p-[10px]">Error al cargar los topicos</p>
+                <p className="text-red-500 p-[10px]">
+                  Error al cargar los topicos
+                </p>
               )}
               {!loadingTopicos &&
-                !errorTopicos && topicos.length > 0 &&
+                !errorTopicos &&
+                topicos.length > 0 &&
                 topicos.map((topico) => (
                   <div key={topico.codigo}>
                     <label className="label cursor-pointer">
@@ -209,7 +227,7 @@ export default function MapaTab() {
                         name="topico"
                         value={topico.codigo}
                         onClick={handleClickRadio}
-                        defaultChecked = {selectedTopic == topico.codigo}
+                        defaultChecked={selectedTopic == topico.codigo}
                         className="radio"
                       />
                     </label>
@@ -225,12 +243,12 @@ export default function MapaTab() {
         <div className="divider divider-horizontal m-0"></div>
       </div>
       <div className="col-span-9 grid grid-cols-12">
-        <div className="flex w-full col-span-7">
+        <div className="flex w-full col-span-7 ">
           <Mapa
             parroquias_counts={data?.data.parroquias_counts}
             num_dias={data?.data.num_dias}
           />
-          <div className="divider divider-horizontal m-0"></div>
+          {/* <div className="divider divider-horizontal m-0"></div> */}
         </div>
         <div className="col-span-5">
           <div className="flex w-full flex-col border-opacity-50">
@@ -239,14 +257,30 @@ export default function MapaTab() {
                 <div className="stat">
                   <div className="stat-title">Tweets Totales Registrados</div>
                   {loadingData && <SkeletonLoader />}
-              {errorData && (
-                <p className="text-red-500 p-[10px]">No se ha podido recuperar la información</p>
-              )}
-              {!loadingData &&
-                !errorData &&
-                <div className="stat-value">{data?.data.total}</div>
-              }
-                  
+                  {errorData && (
+                    <p className="text-red-500 p-[10px]">
+                      No se ha podido recuperar la información
+                    </p>
+                  )}
+                  {!loadingData && !errorData && (
+                    <div className="grid grid-cols-5 gap-1">
+                      {data?.data.total_parroquias != undefined &&
+                        data?.data.total_parroquias > 0 && (
+                          <div className="col-span-2">
+                            <div className="stat-value">
+                              {data?.data.total_parroquias}
+                            </div>
+                            <div className="stat-desc">
+                              Tweets con localización
+                            </div>
+                          </div>
+                        )}
+                      <div className="col-span-2">
+                        <div className="stat-value">{data?.data.total}</div>
+                        <div className="stat-desc">Tweets sin localización</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
