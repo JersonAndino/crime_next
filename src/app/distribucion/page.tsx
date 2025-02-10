@@ -155,11 +155,11 @@ export default function DistribucionTab() {
       <div className="flex w-full col-span-3 min-h-[776px]">
         <div className="space-y-6 min-w-[357.66px]">
           <div>
-            <div className="collapse-title text-xl font-medium">Fechas</div>
+            <div className="collapse-title text-3xl font-bold">Fechas</div>
             <div>
-              <label htmlFor="fechaInicio">Fecha de Inicio:</label>
+              <label htmlFor="fechaInicio" className="text-2xl font-medium">Fecha de Inicio:</label>
               <input
-                className="input w-full max-w-xs"
+                className="input w-full max-w-xs text-2xl font-medium"
                 type="date"
                 id="fechaInicio"
                 name="fechaInicio"
@@ -169,9 +169,9 @@ export default function DistribucionTab() {
               />
             </div>
             <div>
-              <label htmlFor="fechaFin">Fecha de Fin:</label>
+              <label htmlFor="fechaFin" className="text-2xl font-medium">Fecha de Fin:</label>
               <input
-                className="input w-full max-w-xs"
+                className="input w-full max-w-xs text-2xl font-medium"
                 type="date"
                 id="fechaFin"
                 name="fechaFin"
@@ -184,16 +184,16 @@ export default function DistribucionTab() {
           </div>
           <div className="divider m-0"></div>
           <form onSubmit={handleSubmit}>
-            <div className="collapse-title text-xl font-medium">Tópicos</div>
+            <div className="collapse-title text-3xl font-bold">Tópicos</div>
             {loadingTopicos && <SkeletonLoader />}
             {errorTopicos && (
-              <p className="text-red-500 p-[10px]">Error al cargar los tópicos</p>
+              <p className="text-red-500 p-[10px] text-2xl font-bold">Error al cargar los tópicos</p>
             )}
             {!loadingTopicos && !errorTopicos && (
               <div className="">
                 <div>
                   <label className="label cursor-pointer">
-                    <span className="label-text">
+                    <span className="label-text text-2xl font-medium">
                       {isSelectAllChecked
                         ? "Deseleccionar todos los tópicos"
                         : "Seleccionar todos los tópicos"}
@@ -209,7 +209,7 @@ export default function DistribucionTab() {
                 {topicos.map((item) => (
                   <div key={item.codigo}>
                     <label className="label cursor-pointer">
-                      <span className="label-text">{item.nombre}</span>
+                      <span className="label-text text-2xl font-medium">{item.nombre}</span>
                       <input
                         className="checkbox"
                         type="checkbox"
@@ -231,7 +231,7 @@ export default function DistribucionTab() {
       </div>
       <div className="col-span-9 grid grid-cols-12">
         <div className="col-span-12">
-          <h1 className=" text-xl font-medium text-center">
+          <h1 className="text-3xl font-bold text-center">
             DISTRIBUCIÓN DE TÓPICOS
           </h1>
         </div>
@@ -239,6 +239,7 @@ export default function DistribucionTab() {
           <div className="col-span-4">
           <br />
           {data?.data.topicos_counts.map((topico, index) => (
+            <div key={topico.codigo}>
             <div className="topic-label-element p-0 m-0" key={topico.codigo}>
               <div
                 tabIndex={0}
@@ -249,22 +250,24 @@ export default function DistribucionTab() {
                     id={"topic" + index}
                     className="box-topic rounded-box"
                   ></div>
-                  <h1 className="h-[20px]">
+                  <h1 className="h-[20px] text-2xl font-medium">
                     {topico.codigo}. {topicosJSON[topico.codigo].nombre}
                   </h1>
                 </div>
-                <div className="collapse-content p-1 text-right">
+                <div className="collapse-content p-1 text-right text-2xl font-medium">
                   <p>{topicosJSON[topico.codigo].descripcion}</p>
                 </div>
               </div>
+            </div>
+            <div className="h-[10px]"></div>
             </div>
           ))}
         </div>
         )
         }
-        <div className={!errorData ? "col-start-6 col-span-7": "col-span-12"}>
-          <div className="block-description">
-            <p className="text-xl">
+        <div className={!errorData ? "col-start-6 col-span-7 grid grid-cols-12": "col-start-2 col-span-10"}>
+          <div className="block-description col-start-2 col-span-10">
+            <p className="text-xl text-center">
               Este gráfico de pastel muestra la distribución de los diferentes
               tópicos relacionados con la delincuencia en Quito, en base al
               número de tweets registrados según los filtros seleccionados:
@@ -276,16 +279,18 @@ export default function DistribucionTab() {
           </div>
           {errorData && (
             <div>
-              <p className="text-red-500 p-[10px]">No se encontró información con los datos seleccionados.</p>
+              <p className="text-red-500 p-[10px] text-xl font-bold">No se encontró información con los datos seleccionados.</p>
             </div>
           )}
           {
             !errorData && (
+              <div className="col-span-12">
               <Distribucion
                 topicos_counts={data?.data.topicos_counts}
                 topicos_json={topicosJSON}
                 total={data?.data.total}
               />
+              </div>
             )
           }
         </div>

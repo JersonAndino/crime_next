@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Topico } from "@/types/topico";
+import { Topico, TopicosJSON } from "@/types/topico";
 import { ParroquiasJSON } from "@/types/parroquia";
 import { fetchTopicos } from "@/services/topicoService";
 import { fetchParroquias } from "@/services/parroquiaService";
@@ -25,13 +25,13 @@ export default function MapaTab() {
   const [loadingData, setLoadingData] = useState<boolean>(false);
   const [errorData, setErrorData] = useState<string | null>(null);
 
-  const [selectedTopic, setSelectedTopic] = useState(1);
+  const [selectedTopic, setSelectedTopic] = useState(0);
+  const [topicosJSON, setTopicosJSON] = useState<TopicosJSON>({});
 
   useEffect(() => {
     const loadParroquias = async () => {
       // setLoadingParroquias(true);
       // setErrorParroquias(null);
-      console.log("parroquias");
       try {
         const data = await fetchParroquias();
         const parroquiasJSON: ParroquiasJSON = {};
@@ -57,9 +57,14 @@ export default function MapaTab() {
       setErrorTopicos(null);
       try {
         const data = await fetchTopicos();
-        if (data.data.length == 0) {
-          setErrorTopicos("No se recupero ningún tópico.");
-        } else {
+        if (data.data.length == 0){
+          setErrorTopicos("Error al recuperar la información.")
+        }else{
+          const topicosJSON: TopicosJSON = {};
+          data.data.forEach((topico) => {
+            topicosJSON[topico.codigo] = topico;
+          });
+          setTopicosJSON(topicosJSON);
           setTopicos(data.data);
         }
       } catch (err: unknown) {
@@ -178,11 +183,11 @@ export default function MapaTab() {
       <div className="flex w-full col-span-3 min-h-[776px]">
         <div className="space-y-6 min-w-[357.66px]">
           <div>
-            <div className="collapse-title text-xl font-medium">Fechas</div>
+            <div className="collapse-title text-3xl font-bold">Fechas</div>
             <div>
-              <label htmlFor="fechaInicio">Fecha de Inicio:</label>
+              <label htmlFor="fechaInicio" className="font-medium text-2xl">Fecha de Inicio:</label>
               <input
-                className="input w-full max-w-xs"
+                className="input w-full max-w-xs font-medium text-2xl"
                 type="date"
                 id="fechaInicio"
                 name="fechaInicio"
@@ -192,9 +197,9 @@ export default function MapaTab() {
               />
             </div>
             <div>
-              <label htmlFor="fechaFin">Fecha de Fin:</label>
+              <label htmlFor="fechaFin" className="font-medium text-2xl">Fecha de Fin:</label>
               <input
-                className="input w-full max-w-xs"
+                className="input w-full max-w-xs font-medium text-2xl"
                 type="date"
                 id="fechaFin"
                 name="fechaFin"
@@ -208,10 +213,10 @@ export default function MapaTab() {
           <div className="divider m-0"></div>
           <form onSubmit={handleSubmit} className="min-h-[508px]">
             <div>
-              <div className="collapse-title text-xl font-medium">Tópicos</div>
+              <div className="collapse-title text-3xl font-bold">Tópicos</div>
               {loadingTopicos && <SkeletonLoader />}
               {errorTopicos && (
-                <p className="text-red-500 p-[10px]">
+                <p className="text-red-500 p-[10px] text-2xl font-bold">
                   Error al cargar los topicos
                 </p>
               )}
@@ -221,7 +226,7 @@ export default function MapaTab() {
                 topicos.map((topico) => (
                   <div key={topico.codigo}>
                     <label className="label cursor-pointer">
-                      <span className="label-text">{topico.nombre}</span>
+                      <span className="label-text font-medium text-2xl">{topico.nombre}</span>
                       <input
                         type="radio"
                         name="topico"
@@ -243,22 +248,22 @@ export default function MapaTab() {
         <div className="divider divider-horizontal m-0"></div>
       </div>
       <div className="col-span-9 grid grid-cols-12">
-        <div className="flex w-full col-span-7 ">
+        <div className="flex w-full col-span-6 p-[20px]">
           <Mapa
             parroquias_counts={data?.data.parroquias_counts}
             num_dias={data?.data.num_dias}
           />
           {/* <div className="divider divider-horizontal m-0"></div> */}
         </div>
-        <div className="col-span-5">
+        <div className="col-span-6">
           <div className="flex w-full flex-col border-opacity-50">
             <div className="flex items-center justify-center">
               <div className="stats w-full">
                 <div className="stat">
-                  <div className="stat-title">Tweets Totales Registrados</div>
+                  <div className="stat-title font-bold text-2xl">Tweets Totales Registrados: <br /> <p className="text-neutral">{topicosJSON[selectedTopic] != undefined && topicosJSON[selectedTopic].nombre}</p></div>
                   {loadingData && <SkeletonLoader />}
                   {errorData && (
-                    <p className="text-red-500 p-[10px]">
+                    <p className="text-red-500 p-[10px] font-bold text-2xl">
                       No se ha podido recuperar la información
                     </p>
                   )}
@@ -270,14 +275,14 @@ export default function MapaTab() {
                             <div className="stat-value">
                               {data?.data.total_parroquias}
                             </div>
-                            <div className="stat-desc">
+                            <div className="stat-desc font-bold text-black text-xl">
                               Tweets con localización
                             </div>
                           </div>
                         )}
                       <div className="col-span-2">
                         <div className="stat-value">{data?.data.total}</div>
-                        <div className="stat-desc">Tweets sin localización</div>
+                        <div className="stat-desc font-bold text-black text-xl">Tweets sin localización</div>
                       </div>
                     </div>
                   )}

@@ -166,11 +166,11 @@ export default function ComparativaTab() {
       <div className="flex w-full col-span-3 min-h-[776px]">
         <div className="space-y-6 min-w-[357.66px]">
           <div>
-            <div className="collapse-title text-xl font-medium">Fechas</div>
+            <div className="collapse-title text-2xl font-bold">Fechas</div>
             <div>
-              <label htmlFor="fechaInicio">Fecha de Evento:</label>
+              <label htmlFor="fechaInicio" className="text-xl font-medium">Fecha de Evento:</label>
               <input
-                className="input w-full max-w-xs"
+                className="input w-full max-w-xs text-xl font-medium"
                 type="date"
                 id="fechaInicio"
                 name="fechaInicio"
@@ -180,9 +180,9 @@ export default function ComparativaTab() {
               />
             </div>
             <div>
-              <label htmlFor="meses">Meses:</label>
+              <label htmlFor="meses" className="text-xl font-medium">Meses:</label>
               <input
-                className="input w-full max-w-xs"
+                className="input w-full max-w-xs text-xl font-medium"
                 type="number"
                 id="meses"
                 name="meses"
@@ -196,14 +196,14 @@ export default function ComparativaTab() {
           <form onSubmit={handleSubmit}>
             <div className="collapse collapse-arrow bg-base-100">
               <input type="radio" name="accordion-parroquias" defaultChecked />
-              <div className="collapse-title text-xl font-medium">
+              <div className="collapse-title text-2xl font-bold">
                 Parroquias
               </div>
               <div className="collapse-content">
-                <div className="h-96 overflow-y-auto">
+                <div className="h-[430px] overflow-y-auto">
                   {loadingParroquias && <SkeletonLoader />}
                   {errorParroquias && (
-                    <p className="text-red-500">
+                    <p className="text-red-500 text-xl font-bold">
                       Error al cargar las parroquias
                     </p>
                   )}
@@ -212,8 +212,8 @@ export default function ComparativaTab() {
                       {parroquias.map((item) => (
                         <div key={item.codigo}>
                           <label className="label cursor-pointer">
-                            <span className="label-text">
-                              {item.nombre.toUpperCase()}
+                            <span className="label-text text-xl font-medium">
+                              {item.nombre}
                             </span>
                             <input
                               type="radio"
@@ -234,19 +234,19 @@ export default function ComparativaTab() {
             <div className="divider m-0"></div>
             <div className="collapse collapse-arrow bg-base-100">
               <input type="radio" name="accordion-parroquias" />
-              <div className="collapse-title text-xl font-medium">Tópicos</div>
+              <div className="collapse-title text-2xl font-bold">Tópicos</div>
               <div className="collapse-content">
-                <div className="h-96 overflow-y-auto">
+                <div className="h-150 overflow-y-auto">
                   {loadingTopicos && <SkeletonLoader />}
                   {errorTopicos && (
-                    <p className="text-red-500">Error al cargar los tópicos</p>
+                    <p className="text-red-500 text-xl font-bold">Error al cargar los tópicos</p>
                   )}
                   {!loadingTopicos && !errorTopicos && (
                     <div className="">
                       {topicos.map((topico) => (
                         <div key={topico.codigo}>
                           <label className="label cursor-pointer">
-                            <span className="label-text">{topico.nombre}</span>
+                            <span className="label-text text-xl font-medium">{topico.nombre}</span>
                             <input
                               type="radio"
                               name="topico"
@@ -273,10 +273,10 @@ export default function ComparativaTab() {
       </div>
       <div className="col-span-9 grid grid-cols-12">
         <div className="col-span-12">
-          <h1 className=" text-xl font-medium">
+          <h1 className="text-center text-3xl font-bold">
             VISUALIZACIÓN DE TÓPICOS POR PARROQUIA
           </h1>
-          <p className="px-[100px] py-[20px]">
+          <p className="px-[100px] py-[20px] text-xl">
             Este módulo te permite analizar cómo han cambiado los tweets
             relacionados con delincuencia en Quito antes y después de un evento
             específico. Puedes visualizar una gráfica con dos líneas: una
@@ -288,7 +288,7 @@ export default function ComparativaTab() {
           <div className="col-span-4">
             <div className="stats w-full">
               <div className="stat">
-                <div className="stat-title text-right text-xl">
+                <div className="stat-title text-right text-xl font-bold">
                   Tweets Totales Antes del Evento
                 </div>
                 <div className="stat-value text-right">
@@ -302,7 +302,7 @@ export default function ComparativaTab() {
           <div className="col-span-2">
             <div className="stats w-full bg-base-300">
               <div className="stat">
-                <div className="stat-title text-center">FECHA ANALIZADA</div>
+                <div className="stat-title text-center text-xl font-bold">FECHA ANALIZADA</div>
                 <div className="stat-value text-center">{fechaInicio}</div>
                 {/* <div className="stat-desc">21% more than last month</div> */}
               </div>
@@ -311,7 +311,7 @@ export default function ComparativaTab() {
           <div className="col-span-4">
             <div className="stats w-full">
               <div className="stat">
-                <div className="stat-title text-xl">
+                <div className="stat-title text-xl font-bold">
                   Tweets Totales Después del evento
                 </div>
                 <div className="stat-value">{data?.data.total_despues}</div>
@@ -336,8 +336,8 @@ export default function ComparativaTab() {
             )}
           </div>
           <div className="col-span-12 grid grid-cols-11">
-            <div className="col-start-4 col-span-2 text-right">
-              <h1>Gráfica superpuesta</h1>
+            <div className="col-start-4 col-span-2 text-right ">
+              <h1 className="text-xl font-bold">Gráfica superpuesta</h1>
             </div>
             <div className="col-span-1 m-auto text-center">
               <input
@@ -348,7 +348,7 @@ export default function ComparativaTab() {
               />
             </div>
             <div className="col-span-2">
-              <h1>Gráfica completa</h1>
+              <h1 className="text-xl font-bold">Gráfica completa</h1>
             </div>
           </div>
         </div>

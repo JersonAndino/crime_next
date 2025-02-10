@@ -210,11 +210,11 @@ export default function ParroquiasTab() {
       <div className="flex w-full col-span-3 min-h-[776px]">
         <div className="space-y-6 min-w-[357.66px]">
           <div>
-            <div className="collapse-title text-xl font-medium">Fechas</div>
+            <div className="collapse-title text-3xl font-bold">Fechas</div>
             <div>
-              <label htmlFor="fechaInicio">Fecha de Inicio:</label>
+              <label htmlFor="fechaInicio" className="text-2xl font-medium">Fecha de Inicio:</label>
               <input
-                className="input w-full max-w-xs"
+                className="input w-full max-w-xs text-2xl font-medium"
                 type="date"
                 id="fechaInicio"
                 name="fechaInicio"
@@ -224,9 +224,9 @@ export default function ParroquiasTab() {
               />
             </div>
             <div>
-              <label htmlFor="fechaFin">Fecha de Fin:</label>
+              <label htmlFor="fechaFin" className="text-2xl font-medium">Fecha de Fin:</label>
               <input
-                className="input w-full max-w-xs"
+                className="input w-full max-w-xs text-2xl font-medium"
                 type="date"
                 id="fechaFin"
                 name="fechaFin"
@@ -241,14 +241,14 @@ export default function ParroquiasTab() {
           <form onSubmit={handleSubmit}>
             <div className="collapse collapse-arrow bg-base-100">
               <input type="radio" name="accordion-parroquias" defaultChecked />
-              <div className="collapse-title text-xl font-medium">
+              <div className="collapse-title text-3xl font-bold">
                 Parroquias
               </div>
               <div className="collapse-content">
                 <div className="h-96 overflow-y-auto">
                   {loadingParroquias && <SkeletonLoader />}
                   {errorParroquias && (
-                    <p className="text-red-500 p-[10px]">
+                    <p className="text-red-500 p-[10px] text-2xl font-bold" >
                       Error al cargar las parroquias
                     </p>
                   )}
@@ -256,7 +256,7 @@ export default function ParroquiasTab() {
                     <div className="">
                       <div>
                         <label className="label cursor-pointer">
-                          <span className="label-text">
+                          <span className="label-text text-2xl font-medium">
                             {isSelectAllParroquiasChecked
                               ? "Deseleccionar todas las parroquias"
                               : "Seleccionar todas las parroquias"}
@@ -272,7 +272,7 @@ export default function ParroquiasTab() {
                       {parroquias.map((item) => (
                         <div key={item.codigo}>
                           <label className="label cursor-pointer">
-                            <span className="label-text">{item.nombre}</span>
+                            <span className="label-text text-2xl font-medium">{item.nombre}</span>
                             <input
                               className="checkbox"
                               type="checkbox"
@@ -291,18 +291,18 @@ export default function ParroquiasTab() {
             <div className="divider m-0"></div>
             <div className="collapse collapse-arrow bg-base-100">
               <input type="radio" name="accordion-parroquias" />
-              <div className="collapse-title text-xl font-medium">Tópicos</div>
+              <div className="collapse-title text-3xl font-bold">Tópicos</div>
               <div className="collapse-content">
                 <div className="h-96 overflow-y-auto">
                   {loadingTopicos && <SkeletonLoader />}
                   {errorTopicos && (
-                    <p className="text-red-500 p-[10px]">Error al cargar los tópicos</p>
+                    <p className="text-red-500 p-[10px] text-2xl font-bold">Error al cargar los tópicos</p>
                   )}
                   {!loadingTopicos && !errorTopicos && (
                     <div className="">
                       <div>
                         <label className="label cursor-pointer">
-                          <span className="label-text">
+                          <span className="label-text text-2xl font-medium">
                             {isSelectAllTopicosChecked
                               ? "Deseleccionar todos los tópicos"
                               : "Seleccionar todos los tópicos"}
@@ -318,7 +318,7 @@ export default function ParroquiasTab() {
                       {topicos.map((item) => (
                         <div key={item.codigo}>
                           <label className="label cursor-pointer">
-                            <span className="label-text">{item.codigo}. {item.nombre}</span>
+                            <span className="label-text text-2xl font-medium">{item.codigo}. {item.nombre}</span>
                             <input
                               className="checkbox"
                               type="checkbox"
@@ -343,11 +343,11 @@ export default function ParroquiasTab() {
       </div>
       <div className="col-span-9 grid grid-cols-12">
         <div className="col-span-12">
-          <h1 className="text-center text-xl font-medium">
+          <h1 className="text-center text-3xl font-bold">
             VISUALIZACIÓN DE TÓPICOS POR PARROQUIA
           </h1>
         </div>
-        <p className="col-span-12 px-[100px] py-[20px]">
+        <p className="col-span-12 px-[100px] py-[20px] text-xl text-center">
           Este módulo ofrece una representación detallada del comportamiento de
           los crímenes en distintas zonas geográficas, mostrando un gráfico de
           barras por parroquia con el número total de menciones de cada tópico,

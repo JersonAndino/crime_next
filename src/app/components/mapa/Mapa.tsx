@@ -356,12 +356,12 @@ const Mapa: React.FC<MapaProps> = ({ parroquias_counts, num_dias }) => {
               key={row}
             >
               <path
-                onMouseEnter={() =>
-                  handleHoverPath(parseInt(row), parroquiasMap[parseInt(row)].transform)
-                }
-                onMouseLeave={() =>
-                  handleHoverPathLeave(parseInt(row), parroquiasMap[parseInt(row)].transform)
-                }
+                // onMouseEnter={() =>
+                //   handleHoverPath(parseInt(row), parroquiasMap[parseInt(row)].transform)
+                // }
+                // onMouseLeave={() =>
+                //   handleHoverPathLeave(parseInt(row), parroquiasMap[parseInt(row)].transform)
+                // }
                 key={parroquiasMap[parseInt(row)].id}
                 id={parroquiasMap[parseInt(row)].id}
                 d={parroquiasMap[parseInt(row)].d}

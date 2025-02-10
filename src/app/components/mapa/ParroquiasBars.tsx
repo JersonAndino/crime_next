@@ -9,6 +9,7 @@ import {
   Legend,
   ChartOptions,
 } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { useState, useEffect } from "react";
 import { CountResponse } from "@/types/response";
 import { ParroquiasJSON } from "@/types/parroquia";
@@ -17,6 +18,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  ChartDataLabels,
   Title,
   Tooltip,
   Legend
@@ -34,36 +36,23 @@ const ParroquiasBars: React.FC<ParroquiasBarsProps> = ({
   const [chartColors, setChartColors] = useState<string[]>([]);
   const labels: string[] = [];
   const numbers: number[] = [];
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const getCSSVariable = (variable: string): string =>
         getComputedStyle(document.documentElement)
           .getPropertyValue(variable)
           .trim();
-      // const convertOklchToRgb = (color_lhc: string): string => {
-      //   const l = parseFloat(color_lhc.split(" ")[0]) / 100;
-      //   const c = parseFloat(color_lhc.split(" ")[1]);
-      //   const h = parseFloat(color_lhc.split(" ")[2]);
-      //   const hue = h * (Math.PI / 180); // Convertir a radianes
-      //   const r = Math.max(0, Math.min(1, l + c * Math.cos(hue)));
-      //   const g = Math.max(0, Math.min(1, l + c * Math.sin(hue)));
-      //   const b = Math.max(0, Math.min(1, l - c)); // Simplificación
-      //   return `rgb(${r * 255}, ${g * 255}, ${b * 255})`;
-      // };
+      
       const colors = [
         getCSSVariable("--n"),
-        getCSSVariable("--b1"),
-        getCSSVariable("--b2"),
-        getCSSVariable("--b3"),
+        // getCSSVariable("--b1"),
+        // getCSSVariable("--b2"),
+        // getCSSVariable("--b3"),
       ];
-      console.log(colors);
-      const colorsRGB: string[] = []
-      colors.forEach((color) => {
-        colorsRGB.push(`oklch(${color})`)
-        // colorsRGB.push(convertOklchToRgb(color))
-      })
+      
+      const colorsRGB: string[] = colors.map((color) => `oklch(${color})`);
       setChartColors(colorsRGB);
-      console.log(colorsRGB);
     }
   }, []);
 
@@ -93,26 +82,66 @@ const ParroquiasBars: React.FC<ParroquiasBarsProps> = ({
     responsive: true,
     plugins: {
       legend: {
-        display: true,
-        position: "top", // Posición de la leyenda
+        display: false,
+        position: "top",
+        labels: {
+          font: {
+            size: 20, // Mayor tamaño para la leyenda
+            weight: "bold",
+          },
+        },
       },
       title: {
         display: true,
-        text: "Número de Tweets por parroquia", // Título del gráfico
+        text: "Número de Tweets por parroquia",
+        font: {
+          size: 22, // Mayor tamaño del título
+          weight: "bold",
+        },
+      },
+      datalabels: {
+        display: true,
+        color: 'black',
+        anchor: 'end',
+        align: 'end',
+        font: {
+          size: 16,
+          weight: 'bold',
+        },
       },
     },
     scales: {
       y: {
-        beginAtZero: true, // Comienza el eje Y desde 0
+        beginAtZero: true,
         title: {
           display: true,
-          text: "Número de Tweets",
+          text: "Parroquias",
+          font: {
+            size: 20, // Mayor tamaño para el título del eje Y
+            weight: "bold",
+          },
+        },
+        ticks: {
+          font: {
+            size: 20, // Mayor tamaño de etiquetas del eje Y
+            weight: "bold",
+          },
         },
       },
       x: {
         title: {
           display: true,
-          text: "Topicos",
+          text: "Número de tweets",
+          font: {
+            size: 18, // Mayor tamaño para el título del eje X
+            weight: "bold",
+          },
+        },
+        ticks: {
+          font: {
+            size: 16, // Mayor tamaño de etiquetas del eje X
+            weight: "bold",
+          },
         },
       },
     },

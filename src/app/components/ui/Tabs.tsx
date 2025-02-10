@@ -48,28 +48,28 @@ const Tabs = () => {
             role="tab"
             className={`tab ${pathname === "/mapa" ? "tab-active" : ""}`}
           >
-            <span className="text-xl font-medium">Mapa</span>
+            <span className="text-2xl font-bold">Mapa</span>
           </Link>
           <Link
             href="/distribucion"
             role="tab"
             className={`tab ${pathname === "/distribucion" ? "tab-active" : ""}`}
           >
-            <span className="text-xl font-medium">Distribución</span>
+            <span className="text-2xl font-bold">Distribución</span>
           </Link>
           <Link
             href="/analiticas"
             role="tab"
             className={`tab ${pathname === "/analiticas" ? "tab-active" : ""}`}
           >
-            <span className="text-xl font-medium">Parroquias</span>
+            <span className="text-2xl font-bold">Parroquias</span>
           </Link>
           <Link
             href="/comparativa"
             role="tab"
             className={`tab ${pathname === "/comparativa" ? "tab-active" : ""}`}
           >
-            <span className="text-xl font-medium">Comparación</span>
+            <span className="text-2xl font-bold">Comparación</span>
           </Link>
         </div>
       </div>
@@ -81,7 +81,7 @@ const Tabs = () => {
             role="tab"
             className={`tab ${pathname === "/admin" || pathname === "/login" ? "tab-active" : ""}`}
           >
-            <span className="text-xl font-medium">Administración</span>
+            <span className="text-2xl font-bold">Administración</span>
           </Link>
         </div>
       </div>

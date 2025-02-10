@@ -10,6 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Line } from "react-chartjs-2";
 
 // Registrar los componentes necesarios, incluido el plugin de anotaciones
@@ -18,6 +19,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
+  ChartDataLabels,
   Title,
   Tooltip,
   Legend,
@@ -87,10 +89,30 @@ const ComparacionLineasCompleto: React.FC<ComparativeLineasCompletoProps> = ({
     plugins: {
       legend: {
         position: "top",
+        labels: {
+          font: {
+            size: 18, // Tamaño de la fuente de la leyenda
+            weight: "bold", // Negrita
+          },
+        },
       },
       title: {
         display: true,
         text: "Comparación Antes y Después del Evento",
+        font: {
+          size: 22, // Tamaño del título
+          weight: "bold", // Negrita
+        },
+      },
+      datalabels: {
+        display: true,
+        color: 'black',
+        anchor: 'end',
+        align: 'top',
+        font: {
+          size: 16,
+          weight: 'bold',
+        },
       },
       annotation: {
         annotations: {
@@ -115,12 +137,32 @@ const ComparacionLineasCompleto: React.FC<ComparativeLineasCompletoProps> = ({
         title: {
           display: true,
           text: "Número de Observaciones",
+          font: {
+            size: 18, // Tamaño del título del eje X
+            weight: "bold", // Negrita
+          },
+        },
+        ticks: {
+          font: {
+            size: 16, // Tamaño de etiquetas del eje X
+            weight: "bold", // Negrita
+          },
         },
       },
       y: {
         title: {
           display: true,
           text: "Totales",
+          font: {
+            size: 18, // Tamaño del título del eje Y
+            weight: "bold", // Negrita
+          },
+        },
+        ticks: {
+          font: {
+            size: 16, // Tamaño de etiquetas del eje Y
+            weight: "bold", // Negrita
+          },
         },
       },
     },

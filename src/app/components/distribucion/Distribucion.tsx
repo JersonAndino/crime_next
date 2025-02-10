@@ -17,7 +17,6 @@ const Distribucion: React.FC<DistribucionProps> = ({
   topicos_json,
   total,
 }) => {
-  //   const topics:  = [];
   const counts: number[] =
     topicos_counts != undefined
       ? topicos_counts.map((topico) => topico.total)
@@ -30,75 +29,81 @@ const Distribucion: React.FC<DistribucionProps> = ({
         )
       : [];
 
-      const fixedColors = [
-        "rgb(54, 162, 235)",  // Azul estándar
-        "rgb(75, 192, 192)",  // Verde azulado
-        "rgb(153, 204, 255)", // Azul claro pastel
-        "rgb(0, 119, 182)",   // Azul oscuro intenso
-        "rgb(173, 216, 230)", // Azul cielo claro
-        "rgb(30, 144, 255)",  // Azul Dodger
-        "rgb(0, 180, 216)",   // Azul brillante
-        "rgb(135, 206, 250)", // Azul claro cielo
-        "rgb(72, 202, 228)",  // Turquesa claro
-        "rgb(2, 62, 138)",    // Azul marino oscuro
-        "rgb(201, 203, 207)", // Gris claro neutro
-        "rgb(70, 130, 180)",  // Azul acero
-        "rgb(176, 224, 230)", // Azul claro pálido
-        "rgb(123, 104, 238)", // Azul púrpura (Blue Violet)
-        "rgb(0, 191, 255)",   // Azul cielo profundo
-      ];
+  const fixedColors = [
+    "rgb(54, 162, 235)",  // Azul estándar
+    "rgb(75, 192, 192)",  // Verde azulado
+    "rgb(153, 204, 255)", // Azul claro pastel
+    "rgb(0, 119, 182)",   // Azul oscuro intenso
+    "rgb(173, 216, 230)", // Azul cielo claro
+    "rgb(30, 144, 255)",  // Azul Dodger
+    "rgb(0, 180, 216)",   // Azul brillante
+    "rgb(135, 206, 250)", // Azul claro cielo
+    "rgb(72, 202, 228)",  // Turquesa claro
+    "rgb(2, 62, 138)",    // Azul marino oscuro
+    "rgb(201, 203, 207)", // Gris claro neutro
+    "rgb(70, 130, 180)",  // Azul acero
+    "rgb(176, 224, 230)", // Azul claro pálido
+    "rgb(123, 104, 238)", // Azul púrpura (Blue Violet)
+    "rgb(0, 191, 255)",   // Azul cielo profundo
+  ];
       
+  const generateFixedColors = (numColors: number) => {
+    const colors = [];
+    for (let i = 0; i < numColors; i++) {
+      colors.push(fixedColors[i % fixedColors.length]); // Ciclar colores
+    }
+    return colors;
+  };
       
-      const generateFixedColors = (numColors: number) => {
-        const colors = [];
-        for (let i = 0; i < numColors; i++) {
-          colors.push(fixedColors[i % fixedColors.length]); // Ciclar colores
-        }
-        return colors;
-      };
-      
-      const data1 = {
-        labels: labels, // Define las etiquetas de tu gráfico
-        datasets: [
-          {
-            label: "Distribucion",
-            data: counts, // Define los datos
-            backgroundColor: generateFixedColors(counts.length), // Usar la paleta de colores fija
-            hoverOffset: 20,
-          },
-        ],
-      };
-      
+  const data1 = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Distribución",
+        data: counts,
+        backgroundColor: generateFixedColors(counts.length),
+        hoverOffset: 20,
+      },
+    ],
+  };
 
   const options: ChartOptions<"pie"> = {
+    responsive: true,
+    maintainAspectRatio: false, // Permite un tamaño fijo sin importar la leyenda
     plugins: {
       legend: {
         display: true,
+        labels: {
+          font: {
+            size: 18, // Tamaño de fuente de la leyenda
+            weight: "bold",
+          },
+        },
       },
       datalabels: {
         color: "rgb(0,0,0)",
         font: {
-          size: 15,
+          size: 18, // Aumentar tamaño de etiquetas
           weight: "bold",
         },
         formatter: (value, context) => {
-        const index = context.dataIndex; // Obtén el índice del dato actual
-        const topicNumber = context.chart.data.labels
-          ? context.chart.data.labels[index]
-          : index; // Asume que las etiquetas son los números de tópico
-        const percentage = (
-          (parseFloat(value) * 100) /
-          parseFloat(total != undefined ? total.toString() : "100")
-        ).toFixed(1);
-        return `${percentage}%`; // Muestra número de tópico y porcentaje
-      },
+          const index = context.dataIndex;
+          const percentage = (
+            (parseFloat(value) * 100) /
+            parseFloat(total != undefined ? total.toString() : "100")
+          ).toFixed(1);
+          return `${percentage}%`; // Mostrar porcentaje
+        },
       },
     },
   };
 
   return (
     <section className="CrimeDistributionAll">
-      <div className="crimeDistributionElementPieChartAll w-[700px] m-auto">
+      <div 
+        className="crimeDistributionElementPieChartAll m-auto"
+        style={{ width: "700px", height: "900px" }} // Tamaño fijo
+      >
         <Pie data={data1} options={options} />
       </div>
     </section>
